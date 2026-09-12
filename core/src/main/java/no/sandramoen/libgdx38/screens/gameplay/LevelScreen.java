@@ -3,10 +3,12 @@ package no.sandramoen.libgdx38.screens.gameplay;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.github.tommyettinger.textra.TextraLabel;
 
 import no.sandramoen.libgdx38.actors.*;
 import no.sandramoen.libgdx38.actors.particles.EffectBurst;
+import no.sandramoen.libgdx38.utils.AssetLoader;
 import no.sandramoen.libgdx38.utils.BaseActor;
 import no.sandramoen.libgdx38.utils.BaseScreen;
 
@@ -68,17 +70,8 @@ public class LevelScreen extends BaseScreen {
 
     private void initialize_gui() {
         // resources setup
-        /*life_bar = new BaseProgressBar(Gdx.graphics.getWidth() * .0325f, Gdx.graphics.getHeight() * 0.9725f, uiStage);
-        life_bar.setProgress(100);
-        life_bar.set_color(Color.FIREBRICK);
-        life_bar.setProgressBarColor(Color.PINK);
-        uiStage.addActor(life_bar);
 
-        fulfillment_bar = new BaseProgressBar(Gdx.graphics.getWidth() * .0325f, Gdx.graphics.getHeight() * 0.0555f, uiStage);
-        fulfillment_bar.setProgress(0);
-        fulfillment_bar.set_color(Color.BROWN);
-        fulfillment_bar.setProgressBarColor(Color.GOLD);
-        uiStage.addActor(fulfillment_bar);*/
+        score_label = new TextraLabel("test", AssetLoader.getLabelStyle("Bold20white"));
 
         // ui setup
         uiTable.defaults()
@@ -90,6 +83,7 @@ public class LevelScreen extends BaseScreen {
             .row()
         ;
 
+        uiTable.add(score_label);
         //uiTable.setDebug(true);
     }
 }
