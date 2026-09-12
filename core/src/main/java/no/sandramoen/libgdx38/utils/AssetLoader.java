@@ -1,0 +1,189 @@
+package no.sandramoen.libgdx38.utils;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetDescriptor;
+import com.badlogic.gdx.assets.AssetErrorListener;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Array;
+import com.github.tommyettinger.textra.FWSkin;
+import com.github.tommyettinger.textra.FWSkinLoader;
+import com.github.tommyettinger.textra.Font;
+import com.github.tommyettinger.textra.Styles;
+
+public class AssetLoader implements AssetErrorListener {
+
+    public static TextureAtlas textureAtlas;
+    public static FWSkin mySkin;
+
+    public static String defaultShader;
+    public static String shockwaveShader;
+    public static String backgroundShader;
+
+    public static Sound ball_spawn;
+    public static Sound ball_death;
+    public static Sound ball_bounce;
+    public static Sound game_over_sound;
+    public static Sound area_lost;
+    public static Sound area_gained;
+
+    public static Array<Music> music;
+    public static Music oneMusic;
+    public static Music twoMusic;
+    public static Music threeMusic;
+    public static Music fourMusic;
+    public static Music fiveMusic;
+    public static Music sixMusic;
+    public static Music sevenMusic;
+    public static Music dividerMusic;
+
+    static {
+        long time = System.currentTimeMillis();
+        no.sandramoen.libgdx38.utils.BaseGame.assetManager = new AssetManager();
+        no.sandramoen.libgdx38.utils.BaseGame.assetManager. setLoader(Skin. class, new FWSkinLoader(no.sandramoen.libgdx38.utils.BaseGame.assetManager. getFileHandleResolver()));
+        no.sandramoen.libgdx38.utils.BaseGame.assetManager.setErrorListener(new AssetLoader());
+
+        loadAssets();
+        no.sandramoen.libgdx38.utils.BaseGame.assetManager.finishLoading();
+        assignAssets();
+
+        Gdx.app.log(AssetLoader.class.getSimpleName(), "Asset manager took " + (System.currentTimeMillis() - time) + " ms to load all game assets.");
+    }
+
+    @Override
+    public void error(AssetDescriptor asset, Throwable throwable) {
+        Gdx.app.error(AssetLoader.class.getSimpleName(), "Could not load asset: " + asset.fileName, throwable);
+    }
+
+
+    public static Styles.LabelStyle getLabelStyle(String fontName) {
+        return new Styles.LabelStyle(
+            new Font(
+                AssetLoader.mySkin.get(fontName, Font.class)
+            ), Color.WHITE);
+    }
+
+    private static void loadAssets() {
+        // images
+        no.sandramoen.libgdx38.utils.BaseGame.assetManager.setLoader(no.sandramoen.libgdx38.utils.Text.class, new no.sandramoen.libgdx38.utils.TextLoader(new InternalFileHandleResolver()));
+        no.sandramoen.libgdx38.utils.BaseGame.assetManager.load("images/included/packed/images.pack.atlas", TextureAtlas.class);
+
+        // music
+        no.sandramoen.libgdx38.utils.BaseGame.assetManager.load("audio/music/653724__josefpres__8-bit-game-loop-003-only-organ-short-120-bpm.wav", Music.class);
+        no.sandramoen.libgdx38.utils.BaseGame.assetManager.load("audio/music/653804__josefpres__8-bit-game-loop-004-only-organ-short-120-bpm.wav", Music.class);
+        no.sandramoen.libgdx38.utils.BaseGame.assetManager.load("audio/music/655083__josefpres__8-bit-game-loop-005-only-organ-long-120-bpm.wav", Music.class);
+        no.sandramoen.libgdx38.utils.BaseGame.assetManager.load("audio/music/655831__josefpres__8-bit-game-loop-007-simple-mix-1-short-120-bpm.wav", Music.class);
+        no.sandramoen.libgdx38.utils.BaseGame.assetManager.load("audio/music/656142__josefpres__8-bit-game-loop-008-simple-mix-1-short-120-bpm.wav", Music.class);
+        no.sandramoen.libgdx38.utils.BaseGame.assetManager.load("audio/music/657651__josefpres__8-bit-game-loop-010-simple-mix-4-long-120-bpm.wav", Music.class);
+        no.sandramoen.libgdx38.utils.BaseGame.assetManager.load("audio/music/655190__josefpres__8-bit-game-loop-006-only-organ-long-120-bpm.wav", Music.class);
+        no.sandramoen.libgdx38.utils.BaseGame.assetManager.load("audio/sounds/dividers/464907__plasterbrain__8bit-fall.wav", Music.class);
+        /*BaseGame.assetManager.load("audio/music/697045__gadesound__ambgras-tascamx8_meadow_kl_gades_tascamx8-0001.wav", Music.class);
+        BaseGame.assetManager.load("audio/music/106570__robinhood76__02224-scottish-pipes-march.mp3", Music.class);*/
+
+        // sounds
+        no.sandramoen.libgdx38.utils.BaseGame.assetManager.load("audio/sounds/442127__euphrosyyn__8-bit-game-over.wav", Sound.class);
+        no.sandramoen.libgdx38.utils.BaseGame.assetManager.load("audio/sounds/balls/ball_death.wav", Sound.class);
+        no.sandramoen.libgdx38.utils.BaseGame.assetManager.load("audio/sounds/balls/ball_spawn.wav", Sound.class);
+        no.sandramoen.libgdx38.utils.BaseGame.assetManager.load("audio/sounds/balls/ball_bounce.wav", Sound.class);
+        no.sandramoen.libgdx38.utils.BaseGame.assetManager.load("audio/sounds/areas/558735__samsterbirdies__8-bit-fail.wav", Sound.class);
+        no.sandramoen.libgdx38.utils.BaseGame.assetManager.load("audio/sounds/areas/511385__mrthenoronha__power-up-8-bit.wav", Sound.class);
+
+        /*for (int i = 0; i <= 4; i++)
+            BaseGame.assetManager.load("audio/sounds/sheep/" + i + ".wav", Sound.class);*/
+
+        // i18n
+
+        // shaders
+        no.sandramoen.libgdx38.utils.BaseGame.assetManager.load(new AssetDescriptor("shaders/default.vs", no.sandramoen.libgdx38.utils.Text.class, new no.sandramoen.libgdx38.utils.TextLoader.TextParameter()));
+        no.sandramoen.libgdx38.utils.BaseGame.assetManager.load(new AssetDescriptor("shaders/shockwave.fs", no.sandramoen.libgdx38.utils.Text.class, new no.sandramoen.libgdx38.utils.TextLoader.TextParameter()));
+        no.sandramoen.libgdx38.utils.BaseGame.assetManager.load(new AssetDescriptor("shaders/voronoi.fs", no.sandramoen.libgdx38.utils.Text.class, new no.sandramoen.libgdx38.utils.TextLoader.TextParameter()));
+
+        // skins
+
+        // fonts
+
+        // tiled maps
+        //BaseGame.assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+        //BaseGame.assetManager.load("maps/test.tmx", TiledMap.class);
+
+        // other
+        // BaseGame.assetManager.load(AssetDescriptor("other/jentenavn.csv", Text::class.java, TextLoader.TextParameter()))
+    }
+
+    private static void assignAssets() {
+        // images
+        textureAtlas = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("images/included/packed/images.pack.atlas");
+
+        // music
+        music = new Array();
+        oneMusic = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("audio/music/653724__josefpres__8-bit-game-loop-003-only-organ-short-120-bpm.wav", Music.class);
+        music.add(oneMusic);
+        twoMusic = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("audio/music/653804__josefpres__8-bit-game-loop-004-only-organ-short-120-bpm.wav", Music.class);
+        music.add(twoMusic);
+        threeMusic = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("audio/music/655083__josefpres__8-bit-game-loop-005-only-organ-long-120-bpm.wav", Music.class);
+        music.add(threeMusic);
+        fourMusic = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("audio/music/655831__josefpres__8-bit-game-loop-007-simple-mix-1-short-120-bpm.wav", Music.class);
+        music.add(fourMusic);
+        fiveMusic = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("audio/music/656142__josefpres__8-bit-game-loop-008-simple-mix-1-short-120-bpm.wav", Music.class);
+        music.add(fiveMusic);
+        sixMusic = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("audio/music/657651__josefpres__8-bit-game-loop-010-simple-mix-4-long-120-bpm.wav", Music.class);
+        music.add(sixMusic);
+        sevenMusic = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("audio/music/655190__josefpres__8-bit-game-loop-006-only-organ-long-120-bpm.wav", Music.class);
+        music.add(sevenMusic);
+
+        dividerMusic = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("audio/sounds/dividers/464907__plasterbrain__8bit-fall.wav", Music.class);
+
+        // sounds
+        ball_death = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("audio/sounds/balls/ball_death.wav", Sound.class);
+        ball_spawn = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("audio/sounds/balls/ball_spawn.wav", Sound.class);
+        ball_bounce = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("audio/sounds/balls/ball_bounce.wav", Sound.class);
+        game_over_sound = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("audio/sounds/442127__euphrosyyn__8-bit-game-over.wav", Sound.class);
+        area_gained = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("audio/sounds/areas/511385__mrthenoronha__power-up-8-bit.wav", Sound.class);
+        area_lost = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("audio/sounds/areas/558735__samsterbirdies__8-bit-fail.wav", Sound.class);
+        /*for (int i = 0; i <= 4; i++)
+            sheepSounds.add(BaseGame.assetManager.get("audio/sounds/sheep/" + i + ".wav", Sound.class));*/
+
+        // i18n
+
+        // shaders
+        defaultShader = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("shaders/default.vs", no.sandramoen.libgdx38.utils.Text.class).getString();
+        shockwaveShader = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("shaders/shockwave.fs", no.sandramoen.libgdx38.utils.Text.class).getString();
+        backgroundShader = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("shaders/voronoi.fs", no.sandramoen.libgdx38.utils.Text.class).getString();
+
+        // skins
+        mySkin = new FWSkin(Gdx.files.internal("skins/mySkin/mySkin.json"));
+
+        // fonts
+        loadFonts();
+
+        // tiled maps
+        //loadTiledMap();
+
+        // other
+    }
+
+    private static void loadFonts() {
+        float scale = Gdx.graphics.getWidth() * .05f; // magic number ensures scale ~= 1, based on screen width
+        scale *= 1.01f; // make x percent bigger, bigger = more fuzzy
+
+        mySkin.get("Play-Bold20white", Font.class).scale(scale);
+        mySkin.get("Play-Bold40white", Font.class).scale(scale);
+        mySkin.get("Play-Bold59white", Font.class).scale(scale);
+    }
+
+    private static void loadTiledMap() {
+        /*testMap = BaseGame.assetManager.get("maps/test.tmx", TiledMap.class);
+        level1 = BaseGame.assetManager.get("maps/level1.tmx", TiledMap.class);
+        level2 = BaseGame.assetManager.get("maps/level2.tmx", TiledMap.class);
+
+        maps = new Array();
+        maps.add(testMap);
+        maps.add(level1);
+        maps.add(level2);*/
+    }
+}
