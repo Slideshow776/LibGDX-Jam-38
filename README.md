@@ -1,7 +1,7 @@
-# LibGDX Jam #37
+# LibGDX Jam #38
 A jam game made by [tommyettinger](https://github.com/tommyettinger) and me.
 
-~~[Test it here](https://slideshow776.github.io/LibGDX-Jam-37/).~~
+~~[Test it here](https://slideshow776.github.io/LibGDX-Jam-38/).~~
 
 ## libGDX
 
