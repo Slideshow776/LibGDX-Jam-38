@@ -28,7 +28,7 @@ public class AssetLoader implements AssetErrorListener {
     //public static Sound ball_spawn;
 
     public static Array<Music> music;
-    //public static Music dividerMusic;
+    public static Music level_music;
 
     static {
         long time = System.currentTimeMillis();
@@ -62,7 +62,7 @@ public class AssetLoader implements AssetErrorListener {
         no.sandramoen.libgdx38.utils.BaseGame.assetManager.load("images/included/packed/images.pack.atlas", TextureAtlas.class);
 
         // music
-        //no.sandramoen.libgdx38.utils.BaseGame.assetManager.load("audio/music/653724__josefpres__8-bit-game-loop-003-only-organ-short-120-bpm.wav", Music.class);
+        BaseGame.assetManager.load("audio/music/1013929_Hurt---Instrumental-Cover-_EDITED_.mp3", Music.class);
 
         // sounds
         //no.sandramoen.libgdx38.utils.BaseGame.assetManager.load("audio/sounds/442127__euphrosyyn__8-bit-game-over.wav", Sound.class);
@@ -95,8 +95,8 @@ public class AssetLoader implements AssetErrorListener {
 
         // music
         music = new Array();
-        //oneMusic = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("audio/music/653724__josefpres__8-bit-game-loop-003-only-organ-short-120-bpm.wav", Music.class);
-        //music.add(oneMusic);
+        level_music = BaseGame.assetManager.get("audio/music/1013929_Hurt---Instrumental-Cover-_EDITED_.mp3", Music.class);
+        music.add(level_music);
 
         // sounds
         //ball_death = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("audio/sounds/balls/ball_death.wav", Sound.class);

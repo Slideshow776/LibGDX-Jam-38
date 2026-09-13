@@ -10,7 +10,9 @@ import no.sandramoen.libgdx38.actors.*;
 import no.sandramoen.libgdx38.actors.particles.EffectBurst;
 import no.sandramoen.libgdx38.utils.AssetLoader;
 import no.sandramoen.libgdx38.utils.BaseActor;
+import no.sandramoen.libgdx38.utils.BaseGame;
 import no.sandramoen.libgdx38.utils.BaseScreen;
+import no.sandramoen.libgdx38.utils.GameUtils;
 
 public class LevelScreen extends BaseScreen {
 
@@ -27,9 +29,11 @@ public class LevelScreen extends BaseScreen {
     @Override
     public void initialize() {
         // audio
-        //AssetLoader.dividerMusic.setVolume(BaseGame.soundVolume);
+        GameUtils.setMusicVolume(0.1f); // TODO: tweak for release/publish
+        GameUtils.playLoopingMusic(AssetLoader.level_music);
 
         // actors
+
         background = new Background(mainStage);
 
         initialize_gui();
@@ -71,7 +75,7 @@ public class LevelScreen extends BaseScreen {
     private void initialize_gui() {
         // resources setup
 
-        score_label = new TextraLabel("test", AssetLoader.getLabelStyle("Bold20white"));
+        score_label = new TextraLabel("test", AssetLoader.getLabelStyle("Play-Bold20white"));
 
         // ui setup
         uiTable.defaults()
