@@ -456,6 +456,10 @@ public class BaseActor extends Group {
         setPosition(x - getWidth() / 2, y - getHeight() / 2);
     }
 
+    public void centerAtPosition(Vector2 position) {
+        setPosition(position.x - getWidth() / 2, position.y - getHeight() / 2);
+    }
+
     public void centerAtActor(BaseActor baseActor) {
         centerAtPosition(baseActor.getX() + baseActor.getWidth() / 2, baseActor.getY() + baseActor.getHeight() / 2);
     }
