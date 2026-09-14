@@ -64,7 +64,7 @@ public class GameUtils {
     public static void setMusicVolume(float volume) {
         if (volume > 1f || volume < 0f)
             logError("Volume needs to be within [0-1]. Volume is: " + volume);
-        no.sandramoen.libgdx38.utils.BaseGame.musicVolume = volume;
+        BaseGame.musicVolume = volume;
         setAllMusicVolumes(volume);
     }
 

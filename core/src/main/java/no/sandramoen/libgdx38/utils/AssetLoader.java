@@ -29,6 +29,7 @@ public class AssetLoader implements AssetErrorListener {
 
     public static Array<Music> music;
     public static Music level_music;
+    public static Music fixed_forever_music;
 
     static {
         long time = System.currentTimeMillis();
@@ -63,6 +64,7 @@ public class AssetLoader implements AssetErrorListener {
 
         // music
         BaseGame.assetManager.load("audio/music/1013929_Hurt---Instrumental-Cover-_EDITED_.mp3", Music.class);
+        BaseGame.assetManager.load("audio/music/Ludwig_van_Beethoven_-_Ode_to_Joy_Choral_-_9th_Symphony_(mp3.pm).mp3", Music.class);
 
         // sounds
         //no.sandramoen.libgdx38.utils.BaseGame.assetManager.load("audio/sounds/442127__euphrosyyn__8-bit-game-over.wav", Sound.class);
@@ -97,6 +99,8 @@ public class AssetLoader implements AssetErrorListener {
         music = new Array();
         level_music = BaseGame.assetManager.get("audio/music/1013929_Hurt---Instrumental-Cover-_EDITED_.mp3", Music.class);
         music.add(level_music);
+        fixed_forever_music = BaseGame.assetManager.get("audio/music/Ludwig_van_Beethoven_-_Ode_to_Joy_Choral_-_9th_Symphony_(mp3.pm).mp3", Music.class);
+        music.add(fixed_forever_music);
 
         // sounds
         //ball_death = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("audio/sounds/balls/ball_death.wav", Sound.class);

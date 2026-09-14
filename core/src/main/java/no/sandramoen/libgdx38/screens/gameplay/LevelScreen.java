@@ -2,23 +2,20 @@ package no.sandramoen.libgdx38.screens.gameplay;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.github.tommyettinger.textra.TextraLabel;
+import com.badlogic.gdx.utils.Align;
 
 import no.sandramoen.libgdx38.actors.*;
 import no.sandramoen.libgdx38.actors.particles.EffectBurst;
+import no.sandramoen.libgdx38.screens.shell.MenuScreen;
 import no.sandramoen.libgdx38.utils.AssetLoader;
 import no.sandramoen.libgdx38.utils.BaseActor;
 import no.sandramoen.libgdx38.utils.BaseGame;
 import no.sandramoen.libgdx38.utils.BaseScreen;
 import no.sandramoen.libgdx38.utils.GameUtils;
-import no.sandramoen.libgdx38.actors.Fixable.DIFFICULTY;
 
 public class LevelScreen extends BaseScreen {
 
@@ -26,42 +23,28 @@ public class LevelScreen extends BaseScreen {
     private Background background;
 
     private Piece piece_being_moved = null;
+    private Fixable fixable = null;
 
-    public LevelScreen() {}
+    public LevelScreen() {
+        fixable = new Fixable(
+            BaseGame.WORLD_WIDTH / 2,
+            BaseGame.WORLD_HEIGHT / 2,
+            mainStage,
+            4,
+            "vases/easy/1/"
+        );
+    }
 
 
     @Override
     public void initialize() {
         // audio
-        GameUtils.setMusicVolume(0.1f); // TODO: tweak for release/publish
-        GameUtils.playLoopingMusic(AssetLoader.level_music);
 
         // actors
         background = new Background(mainStage);
 
-        /*Fixable test_vase = new Fixable(
-            BaseGame.WORLD_WIDTH / 2,
-            BaseGame.WORLD_HEIGHT / 2,
-            mainStage,
-            DIFFICULTY.EASY
-        );*/
-
-        float num_pieces = 4;
-        for (int i = 0; i < num_pieces; i++) {
-            Piece piece = new Piece(mainStage, "vases/easy/0/" + i, 1, 2);
-
-            float range = 3f;
-            piece.centerAtPosition(
-                BaseGame.WORLD_WIDTH / 2 + MathUtils.random(-range, range),
-                BaseGame.WORLD_HEIGHT / 2 + MathUtils.random(-range, range)
-            );
-
-            mainStage.addActor(piece);
-        }
-
+        // gui
         initialize_gui();
-
-        // Gdx.input.setCursorCatched(true);
     }
 
 
@@ -105,17 +88,27 @@ public class LevelScreen extends BaseScreen {
         mainStage.addActor(effect);
         effect.start();
 
-        Actor hit = mainStage.hit(world_position.x, world_position.y, true);
-        /*if (!(hit instanceof Piece) || !((Piece) hit).is_movable)
-            return super.touchDown(screenX, screenY, pointer, button);*/
+        // fixed complete
+        if (fixable.is_fixed()) {
+            fixable.remove();
 
+            mainStage.addAction(Actions.sequence(
+                Actions.delay(Piece.REMOVE_DURATION),
+                Actions.run(() -> BaseGame.setActiveScreen(new MenuScreen()))
+            ));
+
+            return super.touchDown(screenX, screenY, pointer, button);
+        }
+
+        // pieces
+        Actor hit = mainStage.hit(world_position.x, world_position.y, true);
         Piece piece = (Piece) hit;
         if (
             piece_being_moved == null &&
-            piece != null && piece.is_movable
+            piece != null && piece.isTouchable()
         ) {
             pickup(piece);
-        } else if (piece_being_moved != null) {
+        } else if (piece_being_moved != null && piece != null) {
             glue(piece_being_moved);
         }
 
@@ -125,17 +118,39 @@ public class LevelScreen extends BaseScreen {
     private void pickup(Piece piece) {
         // TODO: add pick-up sound
 
+        piece.pick_up();
         piece_being_moved = piece;
-
     }
 
     private void glue(Piece piece) {
         // TODO: add glue sound
 
         piece_being_moved = null;
+        piece.glue();
 
-        piece.is_movable = false;
-        piece.stop_rotating();
+        fixable.add(piece);
+
+        if (fixable.is_fixed()) {
+            _set_game_over();
+        }
+    }
+
+
+    private void _set_game_over() {
+        AssetLoader.level_music.pause();
+
+        AssetLoader.fixed_forever_music.setVolume(1f);
+        AssetLoader.fixed_forever_music.play();
+
+        float amount = 0.25f;
+        float duration = 2.1f;
+        for (Piece temp : fixable.pieces) {
+            temp.addAction(Actions.forever(Actions.sequence(
+                Actions.moveBy(0f, amount, duration),
+                Actions.moveBy(0f, -amount * 2, duration * 2),
+                Actions.moveBy(0f, amount, duration)
+            )));
+        }
     }
 
 
