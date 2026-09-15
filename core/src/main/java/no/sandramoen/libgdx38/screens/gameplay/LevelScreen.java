@@ -2,9 +2,14 @@ package no.sandramoen.libgdx38.screens.gameplay;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Align;
 
 import no.sandramoen.libgdx38.actors.*;
 import no.sandramoen.libgdx38.actors.broken.Broken;
@@ -36,6 +41,8 @@ public class LevelScreen extends BaseScreen {
 
         // actors
         background = new Background(mainStage);
+
+        //_start_game_over_show();
 
         // gui
         initialize_gui();
@@ -144,8 +151,88 @@ public class LevelScreen extends BaseScreen {
             Actions.moveBy(0f, amount, duration)
         )));
 
+        _start_game_over_show();
+
         //
         broken.fixed_fixable = fixable;
+    }
+
+
+    private void _start_game_over_show() {
+        /*BaseActor overlay_show = new BaseActor(0f, 0f, mainStage);
+        overlay_show.setTouchable(Touchable.disabled);
+        overlay_show.loadImage("whitePixel");
+        overlay_show.setSize(BaseGame.WORLD_WIDTH, BaseGame.WORLD_HEIGHT);
+        overlay_show.setPosition(0f, 0f);
+        overlay_show.setColor(new Color(0f, 0f, 0f, 0.5f));
+        overlay_show.setZIndex(background.getZIndex() + 1);*/
+
+        BaseActor wheel = new BaseActor(0f, 0f, mainStage);
+        wheel.setTouchable(Touchable.disabled);
+        wheel.loadImage("wheel");
+        wheel.setSize(BaseGame.WORLD_WIDTH * 1.8f, BaseGame.WORLD_WIDTH * 1.8f);
+        wheel.setPosition(BaseGame.WORLD_WIDTH / 2 - wheel.getWidth() / 2, 0 - wheel.getHeight());
+        wheel.setOrigin(Align.center);
+        wheel.addAction(Actions.sequence(
+            Actions.delay(0.5f),
+            Actions.moveBy(0f, wheel.getHeight() / 8, 1f, Interpolation.bounceOut),
+            Actions.forever(Actions.rotateBy(50f, 1f))
+        ));
+        wheel.setZIndex(background.getZIndex() + 1);
+
+        BaseActor angel_0 = new BaseActor(0f, 0f, mainStage);
+        angel_0.setTouchable(Touchable.disabled);
+        angel_0.loadImage("angel_trumpet");
+        angel_0.setSize(8, 8);
+        angel_0.setPosition(BaseGame.WORLD_WIDTH, 0);
+        angel_0.setOrigin(Align.center);
+        angel_0.setZIndex(background.getZIndex() + 1);
+
+        float trumpet_duration = 0.2125f;
+        float scale_to = 1.2f;
+        float rotate_to = -5f;
+        angel_0.addAction((Actions.sequence(
+            Actions.delay(0.5f),
+            Actions.moveTo(BaseGame.WORLD_WIDTH - angel_0.getWidth() * 0.6f, 0f, 1f, Interpolation.bounceOut),
+            Actions.delay(0.4f),
+            Actions.forever(
+                Actions.parallel(
+                    Actions.sequence(
+                        Actions.scaleTo(scale_to, scale_to, trumpet_duration),
+                        Actions.scaleTo(1f, 1f, trumpet_duration)
+                    ),
+                    Actions.sequence(
+                        Actions.rotateTo(rotate_to, trumpet_duration),
+                        Actions.rotateTo(0f, trumpet_duration)
+                    )
+                )
+        ))));
+
+        BaseActor angel_1 = new BaseActor(0f, 0f, mainStage);
+        angel_1.setTouchable(Touchable.disabled);
+        angel_1.loadImage("angel_trumpet");
+        angel_1.setSize(8, 8);
+        angel_1.setPosition(0f - angel_1.getWidth(), 0);
+        angel_1.setOrigin(Align.center);
+        angel_1.flip();
+        angel_1.setZIndex(background.getZIndex() + 1);
+
+        angel_1.addAction((Actions.sequence(
+            Actions.delay(0.5f),
+            Actions.moveTo(0f - angel_1.getWidth() * 0.4f, 0f, 1f, Interpolation.bounceOut),
+            Actions.delay(0.4f),
+            Actions.forever(
+                Actions.parallel(
+                    Actions.sequence(
+                        Actions.scaleTo(scale_to, scale_to, trumpet_duration),
+                        Actions.scaleTo(1f, 1f, trumpet_duration)
+                    ),
+                    Actions.sequence(
+                        Actions.rotateTo(-rotate_to, trumpet_duration),
+                        Actions.rotateTo(0f, trumpet_duration)
+                    )
+                )
+            ))));
     }
 
 

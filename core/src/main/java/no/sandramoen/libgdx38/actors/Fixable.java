@@ -70,9 +70,6 @@ public class Fixable extends BaseActor {
 
 
     private void spawn_pieces() {
-
-        System.out.println(broken);
-
         for (int i = 0; i < broken.num_pieces; i++) {
             Piece piece = new Piece(getStage(), broken.image_path + "/" + i, 2, 2);
 

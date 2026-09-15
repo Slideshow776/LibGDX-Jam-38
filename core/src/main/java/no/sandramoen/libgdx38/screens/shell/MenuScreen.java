@@ -95,8 +95,8 @@ public class MenuScreen extends BaseScreen {
             .left()
         ;
 
-        display_shelf.setDebug(true);
-        uiTable.setDebug(true);
+        //display_shelf.setDebug(true);
+        //uiTable.setDebug(true);
     }
 
 
