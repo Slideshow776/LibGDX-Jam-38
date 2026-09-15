@@ -44,11 +44,6 @@ public class MenuScreen extends BaseScreen {
         background.setSize(BaseGame.WORLD_WIDTH, BaseGame.WORLD_HEIGHT);
         background.setColor(new Color(0x567560FF));
 
-        // shelves
-        /*uiTable.defaults()
-            .padTop(Gdx.graphics.getHeight() * .02f)
-        ;*/
-
         Table display_shelf = new Table();
 
         for (int i = 0; i < BaseGame.brokens.size; i++) {
@@ -56,7 +51,7 @@ public class MenuScreen extends BaseScreen {
                 display_shelf.row();
 
             float shelf_width = 0.17f;
-            float shelf_height = 0.175f;
+            float shelf_height = 0.18f;
             Image item = new Image(AssetLoader.textureAtlas.findRegion(BaseGame.brokens.get(i).image_path + "/shelf_image/shelf_image"));
             int finalI = i;
             item.addListener(new InputListener(){
@@ -66,6 +61,7 @@ public class MenuScreen extends BaseScreen {
                     return super.touchDown(event, x, y, pointer, button);
                 }
             });
+
             display_shelf.add(item)
                 .width(Gdx.graphics.getWidth() * shelf_width)
                 .height(Gdx.graphics.getHeight() * shelf_height)
@@ -73,8 +69,13 @@ public class MenuScreen extends BaseScreen {
         }
 
         uiTable.add(display_shelf)
-            .padLeft(Gdx.graphics.getWidth() * 0.0225f)
-            .padTop(Gdx.graphics.getHeight() * -0.15f)
+            .padTop(Gdx.graphics.getHeight() * 0.062f)
+            .padRight(Gdx.graphics.getWidth() * 0.065f)
+            .padBottom(Gdx.graphics.getHeight() * 0.045f)
+            .padLeft(Gdx.graphics.getWidth() * 0.09f)
+            .expand()
+            .top()
+            .left()
         ;
 
         display_shelf.setDebug(true);
