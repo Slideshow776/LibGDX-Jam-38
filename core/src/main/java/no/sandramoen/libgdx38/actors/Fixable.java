@@ -220,14 +220,15 @@ public class Fixable extends BaseActor {
             Piece piece = new Piece(getStage(), portions[i]);
 
             if (!BaseGame.DISABLE_RANDOM) {
-                float random = 3f;
+                float randomX = 6f;
+                float randomY = 3f;
                 piece.centerAtPosition(
-                    getX() + MathUtils.random(-random, random),
-                    getY() + MathUtils.random(-random, random)
+                    getX() + MathUtils.random(-randomX, randomX),
+                    getY() + MathUtils.random(-randomY, randomY)
                 );
                 // This makes it MUCH harder, haha...
-                // The origin is stored as a float between 0 and 1 for x and for y, representing position in the piece.
-                piece.setOrigin(MathUtils.random(), MathUtils.random());
+                // The origin will be a float near 0.5 for x and for y, representing position in the piece.
+                piece.setOrigin(MathUtils.random(0.25f, 0.75f), MathUtils.random(0.25f, 0.75f));
             }
 
             getStage().addActor(piece);
