@@ -107,12 +107,12 @@ public class Fixable extends BaseActor {
         moves.shuffle();
 
         int start = original.getWidth() / 2 + MathUtils.random(-original.getWidth() / 12, original.getWidth() / 12);
-        for (int y = 0; y < original.getHeight(); y++) {
-            start += moves.get(y);
-            for (int x = 0; x < start; x++) {
+        for (int y = 1; y < original.getHeight() - 1; y++) {
+            start = Math.min(Math.max(start + moves.get(y), 1), original.getWidth() - 1);
+            for (int x = 1; x < start - 1; x++) {
                 portions[0].drawPixel(x, y, 0);
             }
-            for (int x = start; x < original.getWidth(); x++) {
+            for (int x = start + 1; x < original.getWidth() - 1; x++) {
                 portions[1].drawPixel(x, y, 0);
             }
         }
@@ -129,11 +129,11 @@ public class Fixable extends BaseActor {
 
         start = original.getHeight() / 2 + MathUtils.random(-original.getHeight() / 12, original.getHeight() / 12);
         for (int x = 0; x < original.getWidth(); x++) {
-            start += moves.get(x);
-            for (int y = 0; y < start; y++) {
+            start = Math.min(Math.max(start + moves.get(x), 1), original.getHeight() - 1);
+            for (int y = 1; y < start - 1; y++) {
                 portions[0].drawPixel(x, y, 0);
             }
-            for (int y = start; y < original.getHeight(); y++) {
+            for (int y = start + 1; y < original.getHeight() - 1; y++) {
                 portions[2].drawPixel(x, y, 0);
             }
         }
@@ -142,11 +142,11 @@ public class Fixable extends BaseActor {
 
         start = original.getHeight() / 2 + MathUtils.random(-original.getHeight() / 12, original.getHeight() / 12);
         for (int x = 0; x < original.getWidth(); x++) {
-            start += moves.get(x);
-            for (int y = 0; y < start; y++) {
+            start = Math.min(Math.max(start + moves.get(x), 1), original.getHeight() - 1);
+            for (int y = 1; y < start - 1; y++) {
                 portions[1].drawPixel(x, y, 0);
             }
-            for (int y = start; y < original.getHeight(); y++) {
+            for (int y = start + 1; y < original.getHeight() - 1; y++) {
                 portions[3].drawPixel(x, y, 0);
             }
         }
