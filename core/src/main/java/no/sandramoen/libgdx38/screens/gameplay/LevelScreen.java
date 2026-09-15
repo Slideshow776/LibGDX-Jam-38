@@ -83,7 +83,7 @@ public class LevelScreen extends BaseScreen {
             fixable.remove();
 
             mainStage.addAction(Actions.sequence(
-                Actions.delay(Piece.REMOVE_DURATION),
+                Actions.delay(Fixable.REMOVE_DURATION),
                 Actions.run(() -> BaseGame.setActiveScreen(new MenuScreen()))
             ));
 

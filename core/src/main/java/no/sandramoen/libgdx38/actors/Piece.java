@@ -16,7 +16,6 @@ import no.sandramoen.libgdx38.utils.BaseActor;
 import no.sandramoen.libgdx38.utils.BaseGame;
 
 public class Piece extends BaseActor {
-    public static final float REMOVE_DURATION = 1f;
 
     public float inertia = MathUtils.random(0.025f, 0.1f);
 
@@ -70,16 +69,6 @@ public class Piece extends BaseActor {
         addAction(rotation_action);
 
         setDebug(true);
-    }
-
-
-    @Override
-    public boolean remove() {
-        addAction(Actions.sequence(
-            Actions.scaleTo(0f, 0f, REMOVE_DURATION),
-            Actions.removeActor()
-        ));
-        return true; // TODO: prolly bad practice...
     }
 
 

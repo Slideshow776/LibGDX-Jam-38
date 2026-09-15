@@ -21,6 +21,7 @@ import no.sandramoen.libgdx38.utils.GameUtils;
 import java.util.Arrays;
 
 public class Fixable extends BaseActor {
+    public static final float REMOVE_DURATION = 1f;
     public Array<Piece> glued_pieces;
 
     private Broken broken;
@@ -40,11 +41,8 @@ public class Fixable extends BaseActor {
 
 
     public boolean remove() {
-        for (Piece piece : glued_pieces)
-            piece.remove();
-
         addAction(Actions.sequence(
-            Actions.delay(Piece.REMOVE_DURATION),
+            Actions.scaleTo(0f, 0f, REMOVE_DURATION),
             Actions.run(() -> {
                 AssetLoader.fixed_forever_music.stop();
                 GameUtils.playLoopingMusic(AssetLoader.level_music);
