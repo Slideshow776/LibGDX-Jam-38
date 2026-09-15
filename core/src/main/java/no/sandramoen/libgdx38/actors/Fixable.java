@@ -59,11 +59,13 @@ public class Fixable extends BaseActor {
         for (int i = 0; i < num_pieces; i++) {
             Piece piece = new Piece(getStage(), image_path + i, 2, 2);
 
-            float random = 3f;
-            piece.centerAtPosition(
-                getX() + MathUtils.random(-random, random),
-                getY() + MathUtils.random(-random, random)
-            );
+            if(!BaseGame.DISABLE_RANDOM) {
+                float random = 3f;
+                piece.centerAtPosition(
+                    getX() + MathUtils.random(-random, random),
+                    getY() + MathUtils.random(-random, random)
+                );
+            }
 
             getStage().addActor(piece);
         }

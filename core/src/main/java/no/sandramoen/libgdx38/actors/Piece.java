@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Align;
 
 import no.sandramoen.libgdx38.utils.BaseActor;
+import no.sandramoen.libgdx38.utils.BaseGame;
 
 public class Piece extends BaseActor {
     public static final float REMOVE_DURATION = 1f;
@@ -28,9 +29,11 @@ public class Piece extends BaseActor {
 
         setBoundaryRectangle(1f);
 
-        float direction = 1;
-        if (MathUtils.randomBoolean())
-            direction = -1;
+        float direction;
+        if(BaseGame.DISABLE_RANDOM)
+            direction = 0; // when random positions are disabled, we also want to disable rotations.
+        else
+            direction = MathUtils.randomSign(); // returns -1 or 1
 
         rotation_action = Actions.forever(Actions.rotateBy(
                 MathUtils.random(20f, 200f) * direction,
