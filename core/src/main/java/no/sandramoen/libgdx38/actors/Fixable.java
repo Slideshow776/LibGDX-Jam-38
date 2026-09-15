@@ -159,6 +159,9 @@ public class Fixable extends BaseActor {
                     getX() + MathUtils.random(-random, random),
                     getY() + MathUtils.random(-random, random)
                 );
+                // This makes it MUCH harder, haha...
+                // The origin is stored as a float between 0 and 1 for x and for y, representing position in the piece.
+                piece.setOrigin(MathUtils.random(), MathUtils.random());
             }
 
             getStage().addActor(piece);
