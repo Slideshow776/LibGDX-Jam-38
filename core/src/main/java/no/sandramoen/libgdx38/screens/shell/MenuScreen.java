@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -12,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
 
 import no.sandramoen.libgdx38.actors.Background;
+import no.sandramoen.libgdx38.actors.Fixable;
+import no.sandramoen.libgdx38.actors.Piece;
 import no.sandramoen.libgdx38.actors.broken.BlueThick;
 import no.sandramoen.libgdx38.actors.broken.BlueThin;
 import no.sandramoen.libgdx38.actors.broken.Broken;
@@ -52,7 +55,21 @@ public class MenuScreen extends BaseScreen {
 
             float shelf_width = 0.17f;
             float shelf_height = 0.18f;
-            Image item = new Image(AssetLoader.textureAtlas.findRegion(BaseGame.brokens.get(i).image_path + "/shelf_image/shelf_image"));
+            Actor item;
+            if(BaseGame.brokens.get(i).fixed_fixable == null || !BaseGame.brokens.get(i).fixed_fixable.hasChildren())
+                item = new Image(AssetLoader.textureAtlas.findRegion(BaseGame.brokens.get(i).image_path + "/shelf_image/shelf_image"));
+            else {
+                Fixable fixable = BaseGame.brokens.get(i).fixed_fixable;
+                for(Piece piece : fixable.glued_pieces) {
+                    piece.setScale(1);
+                    Vector2 piece_stage_cords = new Vector2(piece.getX(), piece.getY());
+                    fixable.stageToLocalCoordinates(piece_stage_cords);
+                    fixable.addActor(piece);
+                    piece.setPosition(piece_stage_cords.x, piece_stage_cords.y);
+                }
+                System.out.println(fixable);
+                item = fixable;
+            }
             int finalI = i;
             item.addListener(new InputListener(){
                 @Override
