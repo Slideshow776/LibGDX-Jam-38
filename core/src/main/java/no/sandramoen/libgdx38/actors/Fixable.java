@@ -30,7 +30,7 @@ public class Fixable extends BaseActor {
         super(x, y, stage);
 
         this.num_pieces = num_pieces;
-        spawn_pieces(image_path);
+//        spawn_pieces(image_path);
         break_into_pieces(Gdx.files.internal("images/included/test_vase.png"));
         pieces = new Array<Piece>();
 
@@ -92,6 +92,7 @@ public class Fixable extends BaseActor {
         Pixmap[] portions = new Pixmap[4];
         for (int i = 0; i < 4; i++) {
             portions[i] = new Pixmap(original.getWidth(), original.getHeight(), original.getFormat());
+            portions[i].setBlending(Pixmap.Blending.None);
         }
         portions[0].drawPixmap(original, 0, 0);
         portions[1].drawPixmap(original, 0, 0);
@@ -104,7 +105,7 @@ public class Fixable extends BaseActor {
         Arrays.fill(moves.items, thirdAcross, thirdAcross + thirdAcross, -1);
         moves.shuffle();
 
-        int start = original.getWidth() / 2;
+        int start = original.getWidth() / 2 + MathUtils.random(-original.getWidth() / 12, original.getWidth() / 12);
         for (int y = 0; y < original.getHeight(); y++) {
             start += moves.get(y);
             for (int x = 0; x < start; x++) {
@@ -125,7 +126,7 @@ public class Fixable extends BaseActor {
         Arrays.fill(moves.items, thirdAcross, thirdAcross + thirdAcross, -1);
         moves.shuffle();
 
-        start = original.getHeight() / 2;
+        start = original.getHeight() / 2 + MathUtils.random(-original.getHeight() / 12, original.getHeight() / 12);
         for (int x = 0; x < original.getWidth(); x++) {
             start += moves.get(x);
             for (int y = 0; y < start; y++) {
@@ -138,7 +139,7 @@ public class Fixable extends BaseActor {
 
         moves.shuffle();
 
-        start = original.getHeight() / 2;
+        start = original.getHeight() / 2 + MathUtils.random(-original.getHeight() / 12, original.getHeight() / 12);
         for (int x = 0; x < original.getWidth(); x++) {
             start += moves.get(x);
             for (int y = 0; y < start; y++) {
