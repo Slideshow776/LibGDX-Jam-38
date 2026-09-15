@@ -9,7 +9,12 @@ import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.utils.Array;
 
+import no.sandramoen.libgdx38.actors.broken.BlueThick;
+import no.sandramoen.libgdx38.actors.broken.BlueThin;
+import no.sandramoen.libgdx38.actors.broken.Broken;
+import no.sandramoen.libgdx38.actors.broken.CatMug;
 import no.sandramoen.libgdx38.screens.gameplay.LevelScreen;
 
 
@@ -35,6 +40,7 @@ public abstract class BaseGame extends Game implements AssetErrorListener {
     public static final float WORLD_HEIGHT = 9f;
     public static final float MOVEMENT_THRESHOLD = 0.4f;
     public static final boolean DISABLE_RANDOM = false; // Should be true only when testing the fully-fixed state.
+    public static Array<Broken> brokens;
 
 
     public BaseGame() {
@@ -45,6 +51,13 @@ public abstract class BaseGame extends Game implements AssetErrorListener {
         Gdx.input.setInputProcessor(new InputMultiplexer());
         loadGameState();
         new no.sandramoen.libgdx38.utils.AssetLoader();
+
+        brokens = new Array<Broken>();
+
+        brokens.add(new CatMug());
+        brokens.add(new BlueThick());
+        brokens.add(new BlueThin());
+
     }
 
     public static void setActiveScreen(no.sandramoen.libgdx38.utils.BaseScreen screen) {

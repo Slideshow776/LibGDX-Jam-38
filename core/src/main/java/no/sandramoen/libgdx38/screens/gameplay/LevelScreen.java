@@ -137,13 +137,6 @@ public class LevelScreen extends BaseScreen {
         // floating animation
         float amount = 0.25f;
         float duration = 2.1f;
-        /*for (Piece temp : fixable.glued_pieces) {
-            temp.addAction(Actions.forever(Actions.sequence(
-                Actions.moveBy(0f, amount, duration),
-                Actions.moveBy(0f, -amount * 2, duration * 2),
-                Actions.moveBy(0f, amount, duration)
-            )));
-        }*/
 
         fixable.addAction(Actions.forever(Actions.sequence(
             Actions.moveBy(0f, amount, duration),

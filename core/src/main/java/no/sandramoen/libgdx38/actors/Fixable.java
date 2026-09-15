@@ -30,13 +30,12 @@ public class Fixable extends BaseActor {
         super(0f, 0f, stage);
         this.broken = broken;
 
-        setSize(0.05f, 0.05f);
         centerAtPosition(BaseGame.WORLD_WIDTH / 2, BaseGame.WORLD_HEIGHT / 2);
 
         spawn_pieces();
         glued_pieces = new Array<Piece>();
 
-        setDebug(true);
+        //setDebug(true);
     }
 
 
@@ -63,7 +62,12 @@ public class Fixable extends BaseActor {
 
     public void add(Piece piece) {
         glued_pieces.add(piece);
+
+        // add piece to fixable object, and set position to new parent
+        Vector2 piece_stage_cords = new Vector2(piece.getX(), piece.getY());
+        stageToLocalCoordinates(piece_stage_cords);
         addActor(piece);
+        piece.setPosition(piece_stage_cords.x, piece_stage_cords.y);
     }
 
 

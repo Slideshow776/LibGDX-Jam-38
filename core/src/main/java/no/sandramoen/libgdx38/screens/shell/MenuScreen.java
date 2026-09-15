@@ -28,7 +28,6 @@ import no.sandramoen.libgdx38.utils.GameUtils;
 public class MenuScreen extends BaseScreen {
 
     private BaseActor overlay;
-    private Array<Broken> brokens;
 
     @Override
     public void initialize() {
@@ -50,22 +49,20 @@ public class MenuScreen extends BaseScreen {
             .padTop(Gdx.graphics.getHeight() * .02f)
         ;*/
 
-        _initialize_brokens();
-
         Table display_shelf = new Table();
 
-        for (int i = 0; i < brokens.size; i++) {
+        for (int i = 0; i < BaseGame.brokens.size; i++) {
             if (i % 5 == 0)
                 display_shelf.row();
 
             float shelf_width = 0.17f;
             float shelf_height = 0.175f;
-            Image item = new Image(AssetLoader.textureAtlas.findRegion(brokens.get(i).image_path + "/shelf_image/shelf_image"));
+            Image item = new Image(AssetLoader.textureAtlas.findRegion(BaseGame.brokens.get(i).image_path + "/shelf_image/shelf_image"));
             int finalI = i;
             item.addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    BaseGame.setActiveScreen(new LevelScreen(brokens.get(finalI)));
+                    BaseGame.setActiveScreen(new LevelScreen(BaseGame.brokens.get(finalI)));
                     return super.touchDown(event, x, y, pointer, button);
                 }
             });
@@ -111,14 +108,4 @@ public class MenuScreen extends BaseScreen {
 
         return super.touchDown(screenX, screenY, pointer, button);
     }
-
-
-    private void _initialize_brokens() {
-        brokens = new Array<Broken>();
-
-        brokens.add(new CatMug());
-        brokens.add(new BlueThick());
-        brokens.add(new BlueThin());
-    }
-
 }
