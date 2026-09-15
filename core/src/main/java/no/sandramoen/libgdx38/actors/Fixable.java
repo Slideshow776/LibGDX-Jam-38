@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -33,10 +34,9 @@ public class Fixable extends BaseActor {
         centerAtPosition(BaseGame.WORLD_WIDTH / 2, BaseGame.WORLD_HEIGHT / 2);
 
         spawn_pieces();
-        //break_into_pieces(Gdx.files.internal("images/included/test_vase.png"));
         glued_pieces = new Array<Piece>();
 
-        //setDebug(true);
+        setDebug(true);
     }
 
 
@@ -63,6 +63,7 @@ public class Fixable extends BaseActor {
 
     public void add(Piece piece) {
         glued_pieces.add(piece);
+        addActor(piece);
     }
 
 

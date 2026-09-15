@@ -2,14 +2,12 @@ package no.sandramoen.libgdx38.screens.gameplay;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 import no.sandramoen.libgdx38.actors.*;
 import no.sandramoen.libgdx38.actors.broken.Broken;
-import no.sandramoen.libgdx38.actors.broken.CatMug;
 import no.sandramoen.libgdx38.actors.particles.EffectBurst;
 import no.sandramoen.libgdx38.screens.shell.MenuScreen;
 import no.sandramoen.libgdx38.utils.AssetLoader;
@@ -24,8 +22,10 @@ public class LevelScreen extends BaseScreen {
 
     private Piece piece_being_moved;
     private Fixable fixable;
+    private Broken broken;
 
     public LevelScreen(Broken broken) {
+        this.broken = broken;
         fixable = new Fixable(broken, mainStage);
     }
 
@@ -55,14 +55,6 @@ public class LevelScreen extends BaseScreen {
             mouse_stage_position.x - piece.getWidth() / 2,
             mouse_stage_position.y - piece.getHeight() / 2
         );
-        /*piece.addAction(
-            Actions.moveTo(
-                mouse_stage_position.x - piece.getWidth() / 2,
-                mouse_stage_position.y - piece.getHeight() / 2,
-                piece.inertia,
-                Interpolation.bounceOut
-            )
-        );*/
     }
 
 
@@ -113,12 +105,14 @@ public class LevelScreen extends BaseScreen {
         return super.touchDown(screenX, screenY, pointer, button);
     }
 
+
     private void pickup(Piece piece) {
         // TODO: add pick-up sound
 
         piece.pick_up();
         piece_being_moved = piece;
     }
+
 
     private void glue(Piece piece) {
         // TODO: add glue sound
@@ -135,20 +129,30 @@ public class LevelScreen extends BaseScreen {
 
 
     private void _set_game_over() {
+        // audio
         AssetLoader.level_music.pause();
-
         AssetLoader.fixed_forever_music.setVolume(BaseGame.musicVolume * 1.5f);
         AssetLoader.fixed_forever_music.play();
 
+        // floating animation
         float amount = 0.25f;
         float duration = 2.1f;
-        for (Piece temp : fixable.glued_pieces) {
+        /*for (Piece temp : fixable.glued_pieces) {
             temp.addAction(Actions.forever(Actions.sequence(
                 Actions.moveBy(0f, amount, duration),
                 Actions.moveBy(0f, -amount * 2, duration * 2),
                 Actions.moveBy(0f, amount, duration)
             )));
-        }
+        }*/
+
+        fixable.addAction(Actions.forever(Actions.sequence(
+            Actions.moveBy(0f, amount, duration),
+            Actions.moveBy(0f, -amount * 2, duration * 2),
+            Actions.moveBy(0f, amount, duration)
+        )));
+
+        //
+        broken.fixed_fixable = fixable;
     }
 
 
