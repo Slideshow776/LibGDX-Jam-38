@@ -152,6 +152,65 @@ public class Fixable extends BaseActor {
         }
 
         for (int i = 0; i < 4; i++) {
+            PER_ROW:
+            for (int y = 1; y < original.getHeight() - 1; y++) {
+                for (int x = 1; x < original.getWidth() - 1; x++) {
+                    if ((portions[i].getPixel(x, y) & 0xFF) == 0xFF) {
+                        if ((portions[i].getPixel(x + 1, y) & 0xFF) == 0) {
+                            portions[i].drawPixel(x + 1, y, 0x000000FF);
+                            continue PER_ROW;
+                        } else {
+                            if((portions[i].getPixel(x + 1, y) & 0xFF) != 0xFF)
+                                portions[i].drawPixel(x + 1, y, 0x000000FF);
+                        }
+                    }
+                }
+            }
+            PER_ROW:
+            for (int y = 1; y < original.getHeight() - 1; y++) {
+                for (int x = original.getWidth() - 1; x >= 1; x--) {
+                    if ((portions[i].getPixel(x, y) & 0xFF) == 0xFF) {
+                        if ((portions[i].getPixel(x - 1, y) & 0xFF) == 0) {
+                            portions[i].drawPixel(x - 1, y, 0x000000FF);
+                            continue PER_ROW;
+                        } else {
+                            if((portions[i].getPixel(x - 1, y) & 0xFF) != 0xFF)
+                                portions[i].drawPixel(x - 1, y, 0x000000FF);
+                        }
+                    }
+                }
+            }
+            PER_COL:
+            for (int x = 1; x < original.getWidth() - 1; x++) {
+                for (int y = 1; y < original.getHeight() - 1; y++) {
+                    if ((portions[i].getPixel(x, y) & 0xFF) == 0xFF) {
+                        if ((portions[i].getPixel(x, y + 1) & 0xFF) == 0) {
+                            portions[i].drawPixel(x, y + 1, 0x000000FF);
+                            continue PER_COL;
+                        } else {
+                            if((portions[i].getPixel(x, y + 1) & 0xFF) != 0xFF)
+                                portions[i].drawPixel(x, y + 1, 0x000000FF);
+                        }
+                    }
+                }
+            }
+            PER_COL:
+            for (int x = 1; x < original.getWidth() - 1; x++) {
+                for (int y = original.getHeight() - 1; y >= 1; y--) {
+                    if ((portions[i].getPixel(x, y) & 0xFF) == 0xFF) {
+                        if ((portions[i].getPixel(x, y - 1) & 0xFF) == 0) {
+                            portions[i].drawPixel(x, y - 1, 0x000000FF);
+                            continue PER_COL;
+                        } else {
+                            if((portions[i].getPixel(x, y - 1) & 0xFF) != 0xFF)
+                                portions[i].drawPixel(x, y - 1, 0x000000FF);
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < 4; i++) {
             Piece piece = new Piece(getStage(), portions[i]);
 
             if (!BaseGame.DISABLE_RANDOM) {
