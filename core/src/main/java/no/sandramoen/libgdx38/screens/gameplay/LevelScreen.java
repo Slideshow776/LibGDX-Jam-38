@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.utils.Align;
 
 import no.sandramoen.libgdx38.actors.*;
 import no.sandramoen.libgdx38.actors.particles.EffectBurst;
@@ -15,7 +14,6 @@ import no.sandramoen.libgdx38.utils.AssetLoader;
 import no.sandramoen.libgdx38.utils.BaseActor;
 import no.sandramoen.libgdx38.utils.BaseGame;
 import no.sandramoen.libgdx38.utils.BaseScreen;
-import no.sandramoen.libgdx38.utils.GameUtils;
 
 public class LevelScreen extends BaseScreen {
 
@@ -27,8 +25,6 @@ public class LevelScreen extends BaseScreen {
 
     public LevelScreen() {
         fixable = new Fixable(
-            BaseGame.WORLD_WIDTH / 2,
-            BaseGame.WORLD_HEIGHT / 2,
             mainStage,
             4,
             "vases/easy/1/"
@@ -57,14 +53,18 @@ public class LevelScreen extends BaseScreen {
 
     private void move_piece(Piece piece) {
         Vector2 mouse_stage_position = mainStage.screenToStageCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
-        piece.addAction(
+        piece.setPosition(
+            mouse_stage_position.x - piece.getWidth() / 2,
+            mouse_stage_position.y - piece.getHeight() / 2
+        );
+        /*piece.addAction(
             Actions.moveTo(
                 mouse_stage_position.x - piece.getWidth() / 2,
                 mouse_stage_position.y - piece.getHeight() / 2,
                 piece.inertia,
                 Interpolation.bounceOut
             )
-        );
+        );*/
     }
 
 
@@ -144,7 +144,7 @@ public class LevelScreen extends BaseScreen {
 
         float amount = 0.25f;
         float duration = 2.1f;
-        for (Piece temp : fixable.pieces) {
+        for (Piece temp : fixable.glued_pieces) {
             temp.addAction(Actions.forever(Actions.sequence(
                 Actions.moveBy(0f, amount, duration),
                 Actions.moveBy(0f, -amount * 2, duration * 2),

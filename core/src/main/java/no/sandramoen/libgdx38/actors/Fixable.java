@@ -3,8 +3,6 @@ package no.sandramoen.libgdx38.actors;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -21,25 +19,28 @@ import java.util.Arrays;
 
 public class Fixable extends BaseActor {
     public Image shelf_image;
-    public Array<Piece> pieces;
+    public Array<Piece> glued_pieces;
 
     private int num_pieces;
 
 
-    public Fixable(float x, float y, Stage stage, int num_pieces, String image_path) {
-        super(x, y, stage);
-
+    public Fixable(Stage stage, int num_pieces, String image_path) {
+        super(0f, 0f, stage);
         this.num_pieces = num_pieces;
+
+        setSize(0.05f, 0.05f);
+        centerAtPosition(BaseGame.WORLD_WIDTH / 2, BaseGame.WORLD_HEIGHT / 2);
+
 //        spawn_pieces(image_path);
         break_into_pieces(Gdx.files.internal("images/included/test_vase.png"));
-        pieces = new Array<Piece>();
+        glued_pieces = new Array<Piece>();
 
         //setDebug(true);
     }
 
 
     public boolean remove() {
-        for (Piece piece : pieces)
+        for (Piece piece : glued_pieces)
             piece.remove();
 
         addAction(Actions.sequence(
@@ -55,12 +56,12 @@ public class Fixable extends BaseActor {
 
 
     public boolean is_fixed() {
-        return pieces.size >= num_pieces;
+        return glued_pieces.size >= num_pieces;
     }
 
 
     public void add(Piece piece) {
-        pieces.add(piece);
+        glued_pieces.add(piece);
     }
 
 
