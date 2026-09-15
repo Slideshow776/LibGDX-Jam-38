@@ -8,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 import no.sandramoen.libgdx38.actors.*;
+import no.sandramoen.libgdx38.actors.broken.Broken;
+import no.sandramoen.libgdx38.actors.broken.CatMug;
 import no.sandramoen.libgdx38.actors.particles.EffectBurst;
 import no.sandramoen.libgdx38.screens.shell.MenuScreen;
 import no.sandramoen.libgdx38.utils.AssetLoader;
@@ -20,15 +22,11 @@ public class LevelScreen extends BaseScreen {
     private BaseActor overlay;
     private Background background;
 
-    private Piece piece_being_moved = null;
-    private Fixable fixable = null;
+    private Piece piece_being_moved;
+    private Fixable fixable;
 
-    public LevelScreen() {
-        fixable = new Fixable(
-            mainStage,
-            4,
-            "vases/easy/1/"
-        );
+    public LevelScreen(Broken broken) {
+        fixable = new Fixable(broken, mainStage);
     }
 
 
@@ -139,7 +137,7 @@ public class LevelScreen extends BaseScreen {
     private void _set_game_over() {
         AssetLoader.level_music.pause();
 
-        AssetLoader.fixed_forever_music.setVolume(1f);
+        AssetLoader.fixed_forever_music.setVolume(BaseGame.musicVolume * 1.5f);
         AssetLoader.fixed_forever_music.play();
 
         float amount = 0.25f;

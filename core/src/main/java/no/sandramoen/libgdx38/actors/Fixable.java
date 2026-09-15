@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 
 import com.badlogic.gdx.utils.IntArray;
+
+import no.sandramoen.libgdx38.actors.broken.Broken;
 import no.sandramoen.libgdx38.utils.AssetLoader;
 import no.sandramoen.libgdx38.utils.BaseActor;
 import no.sandramoen.libgdx38.utils.BaseGame;
@@ -18,21 +20,20 @@ import no.sandramoen.libgdx38.utils.GameUtils;
 import java.util.Arrays;
 
 public class Fixable extends BaseActor {
-    public Image shelf_image;
     public Array<Piece> glued_pieces;
 
-    private int num_pieces;
+    private Broken broken;
 
 
-    public Fixable(Stage stage, int num_pieces, String image_path) {
+    public Fixable(Broken broken, Stage stage) {
         super(0f, 0f, stage);
-        this.num_pieces = num_pieces;
+        this.broken = broken;
 
         setSize(0.05f, 0.05f);
         centerAtPosition(BaseGame.WORLD_WIDTH / 2, BaseGame.WORLD_HEIGHT / 2);
 
-//        spawn_pieces(image_path);
-        break_into_pieces(Gdx.files.internal("images/included/test_vase.png"));
+        spawn_pieces();
+        //break_into_pieces(Gdx.files.internal("images/included/test_vase.png"));
         glued_pieces = new Array<Piece>();
 
         //setDebug(true);
@@ -56,7 +57,7 @@ public class Fixable extends BaseActor {
 
 
     public boolean is_fixed() {
-        return glued_pieces.size >= num_pieces;
+        return glued_pieces.size >= broken.num_pieces;
     }
 
 
@@ -65,15 +66,19 @@ public class Fixable extends BaseActor {
     }
 
 
-    private void spawn_pieces(String image_path) {
-        for (int i = 0; i < num_pieces; i++) {
-            Piece piece = new Piece(getStage(), image_path + i, 2, 2);
+    private void spawn_pieces() {
+
+        System.out.println(broken);
+
+        for (int i = 0; i < broken.num_pieces; i++) {
+            Piece piece = new Piece(getStage(), broken.image_path + "/" + i, 2, 2);
 
             if(!BaseGame.DISABLE_RANDOM) {
-                float random = 3f;
+                float random_x = 6f;
+                float random_y = 3f;
                 piece.centerAtPosition(
-                    getX() + MathUtils.random(-random, random),
-                    getY() + MathUtils.random(-random, random)
+                    getX() + MathUtils.random(-random_x, random_x),
+                    getY() + MathUtils.random(-random_y, random_y)
                 );
             }
 
@@ -81,12 +86,13 @@ public class Fixable extends BaseActor {
         }
     }
 
+
     private void break_into_pieces(FileHandle file_handle) {
         if (!file_handle.exists()) {
             Gdx.app.error(getClass().getSimpleName(), "Error: Texture doesn't exist. Are you sure the image '" + file_handle + "' is present?");
         }
         // For now, this only breaks into 4 pieces.
-        this.num_pieces = 4;
+        broken.num_pieces = 4;
 
         Pixmap original = new Pixmap(file_handle);
 

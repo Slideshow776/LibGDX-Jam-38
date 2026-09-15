@@ -29,7 +29,7 @@ public class Piece extends BaseActor {
         loadImage(image_path);
 
         //setSize(width,height);
-        setSize(getWidth() * 0.05f, getHeight() * 0.05f);
+        setSize(getWidth() * 0.1f, getHeight() * 0.1f);
         setOrigin(Align.center);
 
         setBoundaryRectangle(1f);
@@ -68,6 +68,8 @@ public class Piece extends BaseActor {
                 1f
         ));
         addAction(rotation_action);
+
+        setDebug(true);
     }
 
 

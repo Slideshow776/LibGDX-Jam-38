@@ -9,8 +9,13 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Array;
 
 import no.sandramoen.libgdx38.actors.Background;
+import no.sandramoen.libgdx38.actors.broken.BlueThick;
+import no.sandramoen.libgdx38.actors.broken.BlueThin;
+import no.sandramoen.libgdx38.actors.broken.Broken;
+import no.sandramoen.libgdx38.actors.broken.CatMug;
 import no.sandramoen.libgdx38.actors.particles.EffectBurst;
 import no.sandramoen.libgdx38.screens.gameplay.LevelScreen;
 import no.sandramoen.libgdx38.utils.AssetLoader;
@@ -23,11 +28,12 @@ import no.sandramoen.libgdx38.utils.GameUtils;
 public class MenuScreen extends BaseScreen {
 
     private BaseActor overlay;
+    private Array<Broken> brokens;
 
     @Override
     public void initialize() {
         // audio
-        GameUtils.setMusicVolume(0.1f); // TODO: tweak for release/publish
+        GameUtils.setMusicVolume(0.4f); // TODO: tweak for release/publish
         GameUtils.playLoopingMusic(AssetLoader.level_music);
 
         // background
@@ -44,19 +50,22 @@ public class MenuScreen extends BaseScreen {
             .padTop(Gdx.graphics.getHeight() * .02f)
         ;*/
 
+        _initialize_brokens();
+
         Table display_shelf = new Table();
 
-        for (int i = 0; i < 17; i++) {
+        for (int i = 0; i < brokens.size; i++) {
             if (i % 5 == 0)
                 display_shelf.row();
 
             float shelf_width = 0.17f;
             float shelf_height = 0.175f;
-            Image item = new Image(AssetLoader.textureAtlas.findRegion("vases/easy/1/1"));
+            Image item = new Image(AssetLoader.textureAtlas.findRegion(brokens.get(i).image_path + "/shelf_image/shelf_image"));
+            int finalI = i;
             item.addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    BaseGame.setActiveScreen(new LevelScreen());
+                    BaseGame.setActiveScreen(new LevelScreen(brokens.get(finalI)));
                     return super.touchDown(event, x, y, pointer, button);
                 }
             });
@@ -102,4 +111,14 @@ public class MenuScreen extends BaseScreen {
 
         return super.touchDown(screenX, screenY, pointer, button);
     }
+
+
+    private void _initialize_brokens() {
+        brokens = new Array<Broken>();
+
+        brokens.add(new CatMug());
+        brokens.add(new BlueThick());
+        brokens.add(new BlueThin());
+    }
+
 }
