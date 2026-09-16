@@ -23,6 +23,7 @@ import no.sandramoen.libgdx38.utils.AssetLoader;
 import no.sandramoen.libgdx38.utils.BaseActor;
 import no.sandramoen.libgdx38.utils.BaseGame;
 import no.sandramoen.libgdx38.utils.BaseScreen;
+import no.sandramoen.libgdx38.utils.GameUtils;
 
 public class LevelScreen extends BaseScreen {
 
@@ -35,11 +36,15 @@ public class LevelScreen extends BaseScreen {
 
     private BaseProgressBar score_bar;
 
+
     public LevelScreen(Broken broken) {
         this.broken = broken;
         fixable = new Fixable(broken, mainStage);
+
         background = new Background(broken.image_path + "/background/background", mainStage);
         background.setZIndex(0);
+        background.setWorldBounds(BaseGame.WORLD_WIDTH, BaseGame.WORLD_HEIGHT);
+        //background.setWorldBounds(background);
     }
 
 
@@ -215,12 +220,47 @@ public class LevelScreen extends BaseScreen {
         if (!BaseGame.isGameOverShowEnabled)
             return;
 
+        float singing_start_delay = 2.1f;
+        float beat_speed = 60f / 131.9f;
+
+        // click sound for testing
+        /*background.addAction(Actions.sequence(
+            Actions.delay(singing_start_delay),
+            Actions.forever(Actions.sequence(
+                Actions.run(() -> AssetLoader.click_sound.play(1f)),
+                Actions.delay(beat_speed)
+        ))));*/
+
+        // camera shake
+        background.shakyCamIntensity = 0.0025f;
+        background.addAction(Actions.sequence(
+            Actions.delay(singing_start_delay),
+            Actions.forever(Actions.sequence(
+                Actions.run(() -> background.isShakyCam = true),
+                Actions.delay(beat_speed * 0.5f),
+                Actions.run(() -> {
+                    //background.isShakyCam = false;
+                    EffectBurst effect = new EffectBurst();
+                    effect.setPosition(
+                        MathUtils.random(0f, BaseGame.WORLD_WIDTH),
+                        MathUtils.random(0f, BaseGame.WORLD_HEIGHT)
+                    );
+                    effect.setScale(0.005f);
+                    effect.setColor(GameUtils.randomLightColor());
+                    mainStage.addActor(effect);
+                    effect.start();
+                }),
+                Actions.delay(beat_speed * 0.5f)
+        ))));
+
         // audio
         AssetLoader.level_music.pause();
         AssetLoader.fixed_forever_music.setVolume(BaseGame.musicVolume * 1.5f);
         AssetLoader.fixed_forever_music.play();
 
         // animation
+
+        //overlay
         /*BaseActor overlay_show = new BaseActor(0f, 0f, mainStage);
         overlay_show.setTouchable(Touchable.disabled);
         overlay_show.loadImage("whitePixel");
@@ -229,6 +269,10 @@ public class LevelScreen extends BaseScreen {
         overlay_show.setColor(new Color(0f, 0f, 0f, 0.5f));
         overlay_show.setZIndex(background.getZIndex() + 1);*/
 
+        // wheel
+        float wheel_direction = 1f;
+        if (MathUtils.randomBoolean())
+            wheel_direction *= -1;
         BaseActor wheel = new BaseActor(0f, 0f, mainStage);
         wheel.setTouchable(Touchable.disabled);
         wheel.loadImage("wheel");
@@ -237,11 +281,12 @@ public class LevelScreen extends BaseScreen {
         wheel.setOrigin(Align.center);
         wheel.addAction(Actions.sequence(
             Actions.delay(0.5f),
-            Actions.moveBy(0f, wheel.getHeight() / 8, 1f, Interpolation.bounceOut),
-            Actions.forever(Actions.rotateBy(50f, 1f))
+            Actions.moveBy(0f, wheel.getHeight() / 8.5f, 1f, Interpolation.bounceOut),
+            Actions.forever(Actions.rotateBy(50f * wheel_direction, 1f))
         ));
         wheel.setZIndex(background.getZIndex() + 1);
 
+        // angles
         BaseActor angel_0 = new BaseActor(0f, 0f, mainStage);
         angel_0.setTouchable(Touchable.disabled);
         angel_0.loadImage("angel_trumpet");
@@ -250,22 +295,21 @@ public class LevelScreen extends BaseScreen {
         angel_0.setOrigin(Align.center);
         angel_0.setZIndex(background.getZIndex() + 1);
 
-        float trumpet_duration = 0.2125f;
         float scale_to = 1.2f;
         float rotate_to = -5f;
         angel_0.addAction((Actions.sequence(
-            Actions.delay(0.5f),
-            Actions.moveTo(BaseGame.WORLD_WIDTH - angel_0.getWidth() * 0.6f, 0f, 1f, Interpolation.bounceOut),
-            Actions.delay(0.4f),
+            Actions.delay(singing_start_delay * 0.25f),
+            Actions.moveTo(BaseGame.WORLD_WIDTH - angel_0.getWidth() * 0.6f, 0f, singing_start_delay * 0.5f, Interpolation.bounceOut),
+            Actions.delay(singing_start_delay * 0.25f),
             Actions.forever(
                 Actions.parallel(
                     Actions.sequence(
-                        Actions.scaleTo(scale_to, scale_to, trumpet_duration),
-                        Actions.scaleTo(1f, 1f, trumpet_duration)
+                        Actions.scaleTo(scale_to, scale_to, beat_speed / 2f),
+                        Actions.scaleTo(1f, 1f, beat_speed / 2f)
                     ),
                     Actions.sequence(
-                        Actions.rotateTo(rotate_to, trumpet_duration),
-                        Actions.rotateTo(0f, trumpet_duration)
+                        Actions.rotateTo(rotate_to, beat_speed / 2f),
+                        Actions.rotateTo(0f, beat_speed / 2f)
                     )
                 )
         ))));
@@ -280,18 +324,18 @@ public class LevelScreen extends BaseScreen {
         angel_1.setZIndex(background.getZIndex() + 1);
 
         angel_1.addAction((Actions.sequence(
-            Actions.delay(0.5f),
-            Actions.moveTo(0f - angel_1.getWidth() * 0.4f, 0f, 1f, Interpolation.bounceOut),
-            Actions.delay(0.4f),
+            Actions.delay(singing_start_delay * 0.25f),
+            Actions.moveTo(0f - angel_1.getWidth() * 0.4f, 0f, singing_start_delay * 0.5f, Interpolation.bounceOut),
+            Actions.delay(singing_start_delay * 0.25f),
             Actions.forever(
                 Actions.parallel(
                     Actions.sequence(
-                        Actions.scaleTo(scale_to, scale_to, trumpet_duration),
-                        Actions.scaleTo(1f, 1f, trumpet_duration)
+                        Actions.scaleTo(scale_to, scale_to, beat_speed / 2f),
+                        Actions.scaleTo(1f, 1f, beat_speed / 2f)
                     ),
                     Actions.sequence(
-                        Actions.rotateTo(-rotate_to, trumpet_duration),
-                        Actions.rotateTo(0f, trumpet_duration)
+                        Actions.rotateTo(-rotate_to, beat_speed / 2f),
+                        Actions.rotateTo(0f, beat_speed / 2f)
                     )
                 )
             ))));
