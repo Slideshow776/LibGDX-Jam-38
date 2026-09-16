@@ -33,6 +33,8 @@ public class LevelScreen extends BaseScreen {
     public LevelScreen(Broken broken) {
         this.broken = broken;
         fixable = new Fixable(broken, mainStage);
+        background = new Background(broken.image_path + "/background/background", mainStage);
+        background.setZIndex(0);
     }
 
 
@@ -41,7 +43,6 @@ public class LevelScreen extends BaseScreen {
         // audio
 
         // actors
-        background = new Background(mainStage);
 
         //_start_game_over_show();
 

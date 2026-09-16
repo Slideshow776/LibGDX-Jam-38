@@ -9,12 +9,12 @@ import no.sandramoen.libgdx38.utils.BaseGame;
 
 public class Background extends BaseActor {
 
-    public Background(Stage stage) {
+    public Background(String image_path, Stage stage) {
         super(0f, 0f, stage);
 
         setTouchable(Touchable.disabled);
 
-        loadImage("whitePixel");
+        loadImage(image_path);
 
         setSize(BaseGame.WORLD_WIDTH + 2, BaseGame.WORLD_HEIGHT + 2);
         setPosition(-1, -1);
