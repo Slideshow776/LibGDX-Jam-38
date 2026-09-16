@@ -47,6 +47,7 @@ public class LevelScreen extends BaseScreen {
 
         // gui
         initialize_gui();
+        BaseGame.create_glue_cursor();
     }
 
 

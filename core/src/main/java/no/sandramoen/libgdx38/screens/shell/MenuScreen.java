@@ -34,6 +34,9 @@ public class MenuScreen extends BaseScreen {
 
     @Override
     public void initialize() {
+        //
+        BaseGame.create_select_cursor();
+
         // audio
         GameUtils.setMusicVolume(0.4f); // TODO: tweak for release/publish
         GameUtils.playLoopingMusic(AssetLoader.level_music);
