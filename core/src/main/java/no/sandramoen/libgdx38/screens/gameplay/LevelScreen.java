@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -15,6 +16,8 @@ import com.badlogic.gdx.utils.reflect.ClassReflection;
 import no.sandramoen.libgdx38.actors.*;
 import no.sandramoen.libgdx38.actors.broken.Broken;
 import no.sandramoen.libgdx38.actors.particles.EffectBurst;
+import no.sandramoen.libgdx38.gui.BaseProgressBar;
+import no.sandramoen.libgdx38.gui.BaseSlider;
 import no.sandramoen.libgdx38.screens.shell.MenuScreen;
 import no.sandramoen.libgdx38.utils.AssetLoader;
 import no.sandramoen.libgdx38.utils.BaseActor;
@@ -30,6 +33,8 @@ public class LevelScreen extends BaseScreen {
     private Fixable fixable;
     private Broken broken;
 
+    private BaseProgressBar score_bar;
+
     public LevelScreen(Broken broken) {
         this.broken = broken;
         fixable = new Fixable(broken, mainStage);
@@ -43,6 +48,10 @@ public class LevelScreen extends BaseScreen {
         // audio
 
         // actors
+        BaseActor overlay = new Background("whitePixel", uiStage);
+        overlay.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        overlay.setColor(Color.BLACK);
+        overlay.addAction(Actions.sequence(Actions.fadeOut(0.25f)));
 
         //_start_game_over_show();
 
@@ -88,12 +97,23 @@ public class LevelScreen extends BaseScreen {
         mainStage.addActor(effect);
         effect.start();
 
+        // audio
+        AssetLoader.glue_sounds.get(MathUtils.random(0, AssetLoader.glue_sounds.size - 1)).play(BaseGame.soundVolume, MathUtils.random(0.9f, 1.1f), 0f);
+
         // fixed complete
         if (fixable.is_fixed()) {
             fixable.remove();
 
+            BaseActor overlay = new Background("whitePixel", uiStage);
+            overlay.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            overlay.setColor(Color.BLACK);
+            overlay.setOpacity(0f);
+
             mainStage.addAction(Actions.sequence(
-                Actions.delay(Fixable.REMOVE_DURATION),
+                Actions.parallel(
+                    Actions.delay(Fixable.REMOVE_DURATION),
+                    Actions.run(() -> overlay.addAction(Actions.fadeIn(Fixable.REMOVE_DURATION)))
+                ),
                 Actions.run(() -> BaseGame.setActiveScreen(new MenuScreen()))
             ));
 
@@ -117,7 +137,7 @@ public class LevelScreen extends BaseScreen {
 
 
     private void pickup(Piece piece) {
-        // TODO: add pick-up sound
+        AssetLoader.ceramic_sounds.get(MathUtils.random(0, AssetLoader.ceramic_sounds.size - 1)).play(BaseGame.soundVolume, MathUtils.random(0.9f, 1.1f), 0f);
 
         piece.pick_up();
         piece_being_moved = piece;
@@ -125,7 +145,7 @@ public class LevelScreen extends BaseScreen {
 
 
     private void glue(Piece piece) {
-        // TODO: add glue sound
+        AssetLoader.ceramic_sounds.get(MathUtils.random(0, AssetLoader.ceramic_sounds.size - 1)).play(BaseGame.soundVolume, MathUtils.random(0.9f, 1.1f), 0f);
 
         piece_being_moved = null;
         piece.glue();
@@ -171,6 +191,17 @@ public class LevelScreen extends BaseScreen {
         overlay_show.setPosition(0f, 0f);
         overlay_show.setColor(new Color(0f, 0f, 0f, 0.5f));
         overlay_show.setZIndex(background.getZIndex() + 1);*/
+
+        score_bar.addAction(Actions.sequence(
+            Actions.delay(1.5f),
+            Actions.fadeIn(0.75f, Interpolation.bounceOut),
+            Actions.run(() -> {
+                double how_fixed = fixable.rate() * 100.0;
+                score_bar.animateProgress((int) Math.round(how_fixed));
+                AssetLoader.wheel_sounds.get(MathUtils.round((float) how_fixed / 10f) - 1).play(BaseGame.soundVolume, MathUtils.random(0.9f, 1.1f), 0f);
+                //System.out.println("wheel sound: " + MathUtils.round((float) how_fixed / 10f));
+            })
+        ));
 
         BaseActor wheel = new BaseActor(0f, 0f, mainStage);
         wheel.setTouchable(Touchable.disabled);
@@ -255,6 +286,9 @@ public class LevelScreen extends BaseScreen {
             .padTop(Gdx.graphics.getHeight() * .1f)
             .row()
         ;
+
+        score_bar = new BaseProgressBar(0f, Gdx.graphics.getHeight() * 0.975f, uiStage);
+        score_bar.setOpacity(0f);
 
         //uiTable.add(score_label);
         //uiTable.setDebug(true);

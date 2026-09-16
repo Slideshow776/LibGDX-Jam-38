@@ -3,11 +3,13 @@ package no.sandramoen.libgdx38.screens.shell;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
@@ -40,6 +42,15 @@ public class MenuScreen extends BaseScreen {
         // audio
         GameUtils.setMusicVolume(0.4f); // TODO: tweak for release/publish
         GameUtils.playLoopingMusic(AssetLoader.level_music);
+        for (int i = 0; i < 10; i++) {
+            AssetLoader.wheel_sounds.get(i).stop();
+        }
+
+        // overlay
+        BaseActor overlay = new Background("whitePixel", uiStage);
+        overlay.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        overlay.setColor(Color.BLACK);
+        overlay.addAction(Actions.sequence(Actions.fadeOut(0.25f)));
 
         // background
         BaseActor background = new BaseActor(0f, 0f, mainStage);
@@ -77,7 +88,15 @@ public class MenuScreen extends BaseScreen {
             item.addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    BaseGame.setActiveScreen(new LevelScreen(BaseGame.brokens.get(finalI)));
+                    AssetLoader.ceramic_sound.play(BaseGame.soundVolume, MathUtils.random(0.75f, 1.25f), 0f);
+                    BaseActor overlay = new Background("whitePixel", uiStage);
+                    overlay.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                    overlay.setColor(Color.BLACK);
+                    overlay.setOpacity(0f);
+                    overlay.addAction(Actions.sequence(
+                        Actions.fadeIn(0.25f),
+                        Actions.run(() -> BaseGame.setActiveScreen(new LevelScreen(BaseGame.brokens.get(finalI))))
+                    ));
                     return super.touchDown(event, x, y, pointer, button);
                 }
             });

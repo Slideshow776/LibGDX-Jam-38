@@ -25,7 +25,7 @@ public class BaseSlider extends Table {
 
     public BaseSlider(String type, String labelText) {
         label = labelInit(labelText);
-        slider = initializeSlider(type);/**/
+        slider = initializeSlider(type);
 
         float containerWidth = Gdx.graphics.getWidth() * 0.07f;
         float containerHeight = Gdx.graphics.getHeight() * 0.02f;

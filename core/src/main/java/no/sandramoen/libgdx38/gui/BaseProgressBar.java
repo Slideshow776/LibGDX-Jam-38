@@ -30,14 +30,14 @@ public class BaseProgressBar extends BaseActor {
         super(0f, 0f, stage);
 
         loadImage("whitePixel");
-        setColor(new Color(0.035f, 0.039f, 0.078f, 1f));
-        setSize(Gdx.graphics.getWidth() * 0.935f, Gdx.graphics.getHeight() * 0.025f);
+        setColor(Color.BROWN);
+        setSize(Gdx.graphics.getWidth() * 1f, Gdx.graphics.getHeight() * 0.05f);
         setPosition(x, y - getHeight());
         setOrigin(Align.center);
 
         progress = new BaseActor(0f, 0f, stage);
         progress.loadImage("whitePixel");
-        progress.setColor(new Color(0.875f, 0.518f, 0.647f, 1f)); // light pink
+        progress.setColor(Color.GOLDENROD);
         progress.setSize(0.0f, getHeight());
         progress.setOrigin(Align.center);
         addActor(progress);
@@ -75,6 +75,15 @@ public class BaseProgressBar extends BaseActor {
         level = Math.min(level + percentage, 100);
         float newWidth = (float) level / 100 * getWidth();
         progress.setSize(newWidth, getHeight());
+    }
+
+
+    public void animateProgress(int percentage) {
+        level = Math.min(level + percentage, 100);
+        float newWidth = (float) level / 100 * getWidth();
+
+        progress.addAction(Actions.sizeTo(newWidth, getHeight(), ((float) percentage / 10) + 2.5f, Interpolation.exp10Out));
+        //System.out.println((float) percentage / 10);
     }
 
 

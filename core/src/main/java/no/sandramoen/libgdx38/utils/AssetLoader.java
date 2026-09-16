@@ -25,7 +25,10 @@ public class AssetLoader implements AssetErrorListener {
     public static String shockwaveShader;
     public static String backgroundShader;
 
-    //public static Sound ball_spawn;
+    public static Array<Sound> wheel_sounds;
+    public static Array<Sound> glue_sounds;
+    public static Array<Sound> ceramic_sounds;
+    public static Sound ceramic_sound;
 
     public static Array<Music> music;
     public static Music level_music;
@@ -67,7 +70,13 @@ public class AssetLoader implements AssetErrorListener {
         BaseGame.assetManager.load("audio/music/Ludwig_van_Beethoven_-_Ode_to_Joy_Choral_-_9th_Symphony_(mp3.pm).mp3", Music.class);
 
         // sounds
-        //no.sandramoen.libgdx38.utils.BaseGame.assetManager.load("audio/sounds/442127__euphrosyyn__8-bit-game-over.wav", Sound.class);
+        BaseGame.assetManager.load("audio/sounds/ceramic.wav", Sound.class);
+        for (int i = 1; i <= 10; i++)
+            BaseGame.assetManager.load("audio/sounds/wheel/" + i + ".wav", Sound.class);
+        for (int i = 0; i <= 2; i++)
+            BaseGame.assetManager.load("audio/sounds/glue/" + i + ".wav", Sound.class);
+        for (int i = 0; i <= 6; i++)
+            BaseGame.assetManager.load("audio/sounds/ceramic/" + i + ".wav", Sound.class);
 
         /*for (int i = 0; i <= 4; i++)
             BaseGame.assetManager.load("audio/sounds/sheep/" + i + ".wav", Sound.class);*/
@@ -96,7 +105,7 @@ public class AssetLoader implements AssetErrorListener {
         textureAtlas = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("images/included/packed/images.pack.atlas");
 
         // music
-        music = new Array();
+        music = new Array<Music>();
         level_music = BaseGame.assetManager.get("audio/music/1013929_Hurt---Instrumental-Cover-_EDITED_.mp3", Music.class);
         music.add(level_music);
         fixed_forever_music = BaseGame.assetManager.get("audio/music/Ludwig_van_Beethoven_-_Ode_to_Joy_Choral_-_9th_Symphony_(mp3.pm).mp3", Music.class);
@@ -104,8 +113,16 @@ public class AssetLoader implements AssetErrorListener {
 
         // sounds
         //ball_death = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("audio/sounds/balls/ball_death.wav", Sound.class);
-        /*for (int i = 0; i <= 4; i++)
-            sheepSounds.add(BaseGame.assetManager.get("audio/sounds/sheep/" + i + ".wav", Sound.class));*/
+        ceramic_sound = BaseGame.assetManager.get("audio/sounds/ceramic.wav", Sound.class);
+        wheel_sounds = new Array<Sound>();
+        for (int i = 1; i <= 10; i++)
+            wheel_sounds.add(BaseGame.assetManager.get("audio/sounds/wheel/" + i + ".wav", Sound.class));
+        glue_sounds = new Array<Sound>();
+        for (int i = 0; i <= 2; i++)
+            glue_sounds.add(BaseGame.assetManager.get("audio/sounds/glue/" + i + ".wav", Sound.class));
+        ceramic_sounds = new Array<Sound>();
+        for (int i = 0; i <= 6; i++)
+            ceramic_sounds.add(BaseGame.assetManager.get("audio/sounds/ceramic/" + i + ".wav", Sound.class));
 
         // i18n
 
