@@ -3,6 +3,7 @@ package no.sandramoen.libgdx38.actors;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -24,7 +25,7 @@ public class Fixable extends BaseActor {
     public static final float REMOVE_DURATION = 1f;
     public Array<Piece> glued_pieces;
 
-    private Broken broken;
+    public Broken broken;
 
 
     public Fixable(Broken broken, Stage stage) {
@@ -66,6 +67,34 @@ public class Fixable extends BaseActor {
         stageToLocalCoordinates(piece_stage_cords);
         addActor(piece);
         piece.setPosition(piece_stage_cords.x, piece_stage_cords.y);
+    }
+
+    public double rate() {
+        double distance = 0.0;
+        TextureRegion any_region = glued_pieces.get(0).animation.getKeyFrame(0);
+        double max_dim = Math.hypot(any_region.getRegionWidth(), any_region.getRegionHeight()) * 0.5;
+        int how_many_distances = 0;
+        for (int i = 0; i < glued_pieces.size; i++) {
+            Piece piece_i = glued_pieces.get(i);
+            for (int j = i + 1; j < glued_pieces.size; j++) {
+                Piece piece_j = glued_pieces.get(j);
+                distance += Math.min(Vector2.dst(piece_i.getX(), piece_i.getY(), piece_j.getX(), piece_j.getY()), max_dim);
+                how_many_distances++;
+            }
+        }
+        System.out.println("distance: " + distance);
+        System.out.println("max_dim: " + max_dim);
+        System.out.println("how_many_distances: " + how_many_distances);
+
+        double rotation_diff = 0.0;
+        for (int i = 0; i < glued_pieces.size; i++) {
+            double rot = glued_pieces.get(i).getRotation();
+            rotation_diff += Math.min(rot, 360 - rot);
+        }
+        System.out.println("rotation_diff: " + rotation_diff);
+        double rating = Math.pow(2.0, distance * -0.2 / how_many_distances + rotation_diff / -360.0);
+        System.out.println("rating: " + rating);
+        return rating;
     }
 
 

@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
 
+import com.badlogic.gdx.utils.reflect.ClassReflection;
 import no.sandramoen.libgdx38.actors.*;
 import no.sandramoen.libgdx38.actors.broken.Broken;
 import no.sandramoen.libgdx38.actors.particles.EffectBurst;
@@ -141,6 +142,8 @@ public class LevelScreen extends BaseScreen {
         AssetLoader.fixed_forever_music.setVolume(BaseGame.musicVolume * 1.5f);
         AssetLoader.fixed_forever_music.play();
 
+        double how_fixed = fixable.rate() * 100.0;
+        System.out.println("Fix score for " + ClassReflection.getSimpleName(fixable.broken.getClass()) + ": " + Math.round(how_fixed) + "%");
         // floating animation
         float amount = 0.25f;
         float duration = 2.1f;
