@@ -86,13 +86,16 @@ public class Fixable extends BaseActor {
         System.out.println("max_dim: " + max_dim);
         System.out.println("how_many_distances: " + how_many_distances);
 
-        double rotation_diff = 0.0;
+        double rotation_min = 360.0, rotation_max = 0.0;
         for (int i = 0; i < glued_pieces.size; i++) {
-            double rot = glued_pieces.get(i).getRotation();
-            rotation_diff += Math.min(rot, 360 - rot);
+            double rot = (glued_pieces.get(i).getRotation() % 360 + 360) % 360;
+            rot = Math.min(rot, 360 - rot);
+            rotation_min = Math.min(rot, rotation_min);
+            rotation_max = Math.max(rot, rotation_max);
         }
-        System.out.println("rotation_diff: " + rotation_diff);
-        double rating = Math.pow(2.0, distance * -0.2 / how_many_distances + rotation_diff / -360.0);
+        System.out.println("rotation_min: " + rotation_min);
+        System.out.println("rotation_max: " + rotation_max);
+        double rating = Math.pow(2.0, distance * -0.5 / how_many_distances + (rotation_max - rotation_min) / -180.0);
         System.out.println("rating: " + rating);
         return rating;
     }
