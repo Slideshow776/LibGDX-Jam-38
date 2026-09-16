@@ -30,6 +30,9 @@ public abstract class BaseGame extends Game implements AssetErrorListener {
     public static Preferences preferences;
     public static boolean loadPersonalParameters;
     public static boolean isCustomShadersEnabled = true;
+    public static boolean isCameraShakeEnabled = true;
+    public static boolean isScoreBarEnabled = false;
+    public static boolean isGameOverShowEnabled = true;
     public static boolean isHideUI = false;
     public static float voiceVolume = 1f;
     public static float soundVolume = 1.0f;

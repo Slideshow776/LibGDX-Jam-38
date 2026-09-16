@@ -81,6 +81,27 @@ public class LevelScreen extends BaseScreen {
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.ESCAPE || keycode == Input.Keys.Q) {
             Gdx.app.exit();
+        } else if (keycode == Input.Keys.S) {
+            BaseGame.isGameOverShowEnabled = !BaseGame.isGameOverShowEnabled;
+            if (BaseGame.isGameOverShowEnabled)
+                AssetLoader.click_sound.play(BaseGame.soundVolume, MathUtils.random(1.1f, 1.3f), 0f);
+            else
+                AssetLoader.click_sound.play(BaseGame.soundVolume, MathUtils.random(0.5f, 0.7f), 0f);
+            System.out.println("isGameOverShowEnabled: " + BaseGame.isGameOverShowEnabled);
+        } else if (keycode == Input.Keys.C) {
+            BaseGame.isCameraShakeEnabled = !BaseGame.isCameraShakeEnabled;
+            if (BaseGame.isCameraShakeEnabled)
+                AssetLoader.click_sound.play(BaseGame.soundVolume, MathUtils.random(1.1f, 1.3f), 0f);
+            else
+                AssetLoader.click_sound.play(BaseGame.soundVolume, MathUtils.random(0.5f, 0.7f), 0f);
+            System.out.println("isCameraShakeEnabled: " + BaseGame.isCameraShakeEnabled);
+        } else if (keycode == Input.Keys.B) {
+            BaseGame.isScoreBarEnabled = !BaseGame.isScoreBarEnabled;
+            if (BaseGame.isScoreBarEnabled)
+                AssetLoader.click_sound.play(BaseGame.soundVolume, MathUtils.random(1.1f, 1.3f), 0f);
+            else
+                AssetLoader.click_sound.play(BaseGame.soundVolume, MathUtils.random(0.5f, 0.7f), 0f);
+            System.out.println("isScoreBarEnabled: " + BaseGame.isScoreBarEnabled);
         }
         return super.keyDown(keycode);
     }
@@ -159,31 +180,47 @@ public class LevelScreen extends BaseScreen {
 
 
     private void _set_game_over() {
-        // audio
-        AssetLoader.level_music.pause();
-        AssetLoader.fixed_forever_music.setVolume(BaseGame.musicVolume * 1.5f);
-        AssetLoader.fixed_forever_music.play();
+        // score bar
+        if (BaseGame.isScoreBarEnabled) {
+            //double how_fixed = fixable.rate() * 100.0;
+            //System.out.println("Fix score for " + ClassReflection.getSimpleName(fixable.broken.getClass()) + ": " + Math.round(how_fixed) + "%");
+            score_bar.addAction(Actions.sequence(
+                Actions.delay(1.5f),
+                Actions.fadeIn(0.75f, Interpolation.bounceOut),
+                Actions.run(() -> {
+                    double how_fixed = fixable.rate() * 100.0;
+                    score_bar.animateProgress((int) Math.round(how_fixed));
+                    AssetLoader.wheel_sounds.get(MathUtils.round((float) how_fixed / 10f) - 1).play(BaseGame.soundVolume, MathUtils.random(0.9f, 1.1f), 0f);
+                    //System.out.println("wheel sound: " + MathUtils.round((float) how_fixed / 10f));
+                })
+            ));
+        }
 
-        double how_fixed = fixable.rate() * 100.0;
-        System.out.println("Fix score for " + ClassReflection.getSimpleName(fixable.broken.getClass()) + ": " + Math.round(how_fixed) + "%");
         // floating animation
         float amount = 0.25f;
         float duration = 2.1f;
-
         fixable.addAction(Actions.forever(Actions.sequence(
             Actions.moveBy(0f, amount, duration),
             Actions.moveBy(0f, -amount * 2, duration * 2),
             Actions.moveBy(0f, amount, duration)
         )));
-
-        _start_game_over_show();
-
-        //
         broken.fixed_fixable = fixable;
+
+        // show
+        _start_game_over_show();
     }
 
 
     private void _start_game_over_show() {
+        if (!BaseGame.isGameOverShowEnabled)
+            return;
+
+        // audio
+        AssetLoader.level_music.pause();
+        AssetLoader.fixed_forever_music.setVolume(BaseGame.musicVolume * 1.5f);
+        AssetLoader.fixed_forever_music.play();
+
+        // animation
         /*BaseActor overlay_show = new BaseActor(0f, 0f, mainStage);
         overlay_show.setTouchable(Touchable.disabled);
         overlay_show.loadImage("whitePixel");
@@ -191,17 +228,6 @@ public class LevelScreen extends BaseScreen {
         overlay_show.setPosition(0f, 0f);
         overlay_show.setColor(new Color(0f, 0f, 0f, 0.5f));
         overlay_show.setZIndex(background.getZIndex() + 1);*/
-
-        score_bar.addAction(Actions.sequence(
-            Actions.delay(1.5f),
-            Actions.fadeIn(0.75f, Interpolation.bounceOut),
-            Actions.run(() -> {
-                double how_fixed = fixable.rate() * 100.0;
-                score_bar.animateProgress((int) Math.round(how_fixed));
-                AssetLoader.wheel_sounds.get(MathUtils.round((float) how_fixed / 10f) - 1).play(BaseGame.soundVolume, MathUtils.random(0.9f, 1.1f), 0f);
-                //System.out.println("wheel sound: " + MathUtils.round((float) how_fixed / 10f));
-            })
-        ));
 
         BaseActor wheel = new BaseActor(0f, 0f, mainStage);
         wheel.setTouchable(Touchable.disabled);

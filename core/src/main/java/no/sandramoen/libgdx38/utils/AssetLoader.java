@@ -29,6 +29,7 @@ public class AssetLoader implements AssetErrorListener {
     public static Array<Sound> glue_sounds;
     public static Array<Sound> ceramic_sounds;
     public static Sound ceramic_sound;
+    public static Sound click_sound;
 
     public static Array<Music> music;
     public static Music level_music;
@@ -71,6 +72,7 @@ public class AssetLoader implements AssetErrorListener {
 
         // sounds
         BaseGame.assetManager.load("audio/sounds/ceramic.wav", Sound.class);
+        BaseGame.assetManager.load("audio/sounds/click.wav", Sound.class);
         for (int i = 1; i <= 10; i++)
             BaseGame.assetManager.load("audio/sounds/wheel/" + i + ".wav", Sound.class);
         for (int i = 0; i <= 2; i++)
@@ -112,7 +114,7 @@ public class AssetLoader implements AssetErrorListener {
         music.add(fixed_forever_music);
 
         // sounds
-        //ball_death = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("audio/sounds/balls/ball_death.wav", Sound.class);
+        click_sound = BaseGame.assetManager.get("audio/sounds/click.wav", Sound.class);
         ceramic_sound = BaseGame.assetManager.get("audio/sounds/ceramic.wav", Sound.class);
         wheel_sounds = new Array<Sound>();
         for (int i = 1; i <= 10; i++)

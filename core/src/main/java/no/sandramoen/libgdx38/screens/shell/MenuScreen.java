@@ -1,6 +1,7 @@
 package no.sandramoen.libgdx38.screens.shell;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
@@ -130,6 +131,27 @@ public class MenuScreen extends BaseScreen {
     public boolean keyDown(int keycode) {
         if (keycode == Keys.ESCAPE || keycode == Keys.Q) {
             Gdx.app.exit();
+        } else if (keycode == Input.Keys.S) {
+            BaseGame.isGameOverShowEnabled = !BaseGame.isGameOverShowEnabled;
+            if (BaseGame.isGameOverShowEnabled)
+                AssetLoader.click_sound.play(BaseGame.soundVolume, MathUtils.random(1.1f, 1.3f), 0f);
+            else
+                AssetLoader.click_sound.play(BaseGame.soundVolume, MathUtils.random(0.5f, 0.7f), 0f);
+            System.out.println("isGameOverShowEnabled: " + BaseGame.isGameOverShowEnabled);
+        } else if (keycode == Input.Keys.C) {
+            BaseGame.isCameraShakeEnabled = !BaseGame.isCameraShakeEnabled;
+            if (BaseGame.isCameraShakeEnabled)
+                AssetLoader.click_sound.play(BaseGame.soundVolume, MathUtils.random(1.1f, 1.3f), 0f);
+            else
+                AssetLoader.click_sound.play(BaseGame.soundVolume, MathUtils.random(0.5f, 0.7f), 0f);
+            System.out.println("isCameraShakeEnabled: " + BaseGame.isCameraShakeEnabled);
+        } else if (keycode == Input.Keys.B) {
+            BaseGame.isScoreBarEnabled = !BaseGame.isScoreBarEnabled;
+            if (BaseGame.isScoreBarEnabled)
+                AssetLoader.click_sound.play(BaseGame.soundVolume, MathUtils.random(1.1f, 1.3f), 0f);
+            else
+                AssetLoader.click_sound.play(BaseGame.soundVolume, MathUtils.random(0.5f, 0.7f), 0f);
+            System.out.println("isScoreBarEnabled: " + BaseGame.isScoreBarEnabled);
         }
         return super.keyDown(keycode);
     }
