@@ -6,23 +6,14 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.Array;
 
 import no.sandramoen.libgdx38.actors.Background;
 import no.sandramoen.libgdx38.actors.Fixable;
-import no.sandramoen.libgdx38.actors.Piece;
-import no.sandramoen.libgdx38.actors.broken.BlueThick;
-import no.sandramoen.libgdx38.actors.broken.BlueThin;
-import no.sandramoen.libgdx38.actors.broken.Broken;
-import no.sandramoen.libgdx38.actors.broken.CatMug;
 import no.sandramoen.libgdx38.actors.particles.EffectBurst;
 import no.sandramoen.libgdx38.screens.gameplay.LevelScreen;
 import no.sandramoen.libgdx38.utils.AssetLoader;
@@ -76,13 +67,14 @@ public class MenuScreen extends BaseScreen {
                 item = new Image(AssetLoader.textureAtlas.findRegion(BaseGame.brokens.get(i).image_path + "/shelf_image/shelf_image"));
             else {
                 Fixable fixable = BaseGame.brokens.get(i).fixed_fixable;
-                Stack stack = new Stack();
-                for(Piece piece : fixable.glued_pieces) {
-                    piece.setScale(40);
-                    stack.add(piece);
-                }
-                System.out.println(fixable);
-                item = stack;
+                fixable.clearActions();
+                // if the actions are cleared, the action that changes the music also gets wiped.
+                // we need to stop at least the shrinking-to-nothing action.
+                AssetLoader.fixed_forever_music.stop();
+                GameUtils.playLoopingMusic(AssetLoader.level_music);
+
+                fixable.setScale(30);
+                item = new Container<Fixable>(fixable).padLeft(40); // not sure if 40 is best.
             }
             int finalI = i;
             item.addListener(new InputListener(){
