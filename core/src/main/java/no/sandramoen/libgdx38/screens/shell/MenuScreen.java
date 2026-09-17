@@ -70,7 +70,8 @@ public class MenuScreen extends BaseScreen {
                 fixable.clearActions();
                 // if the actions are cleared, the action that changes the music also gets wiped.
                 // we need to stop at least the shrinking-to-nothing action.
-                AssetLoader.fixed_forever_music.stop();
+                AssetLoader.beethoven_ode_to_joy_music.stop();
+                AssetLoader.firework_ambiant_music.stop();
                 GameUtils.playLoopingMusic(AssetLoader.level_music);
 
                 fixable.setScale(30);

@@ -9,23 +9,29 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 
-import com.badlogic.gdx.utils.reflect.ClassReflection;
 import no.sandramoen.libgdx38.actors.*;
 import no.sandramoen.libgdx38.actors.broken.Broken;
 import no.sandramoen.libgdx38.actors.particles.EffectBurst;
+import no.sandramoen.libgdx38.actors.particles.EffectFirework;
+import no.sandramoen.libgdx38.actors.particles.EffectHolyFire;
+import no.sandramoen.libgdx38.actors.particles.ParticleActor;
 import no.sandramoen.libgdx38.gui.BaseProgressBar;
-import no.sandramoen.libgdx38.gui.BaseSlider;
 import no.sandramoen.libgdx38.screens.shell.MenuScreen;
 import no.sandramoen.libgdx38.utils.AssetLoader;
 import no.sandramoen.libgdx38.utils.BaseActor;
 import no.sandramoen.libgdx38.utils.BaseGame;
 import no.sandramoen.libgdx38.utils.BaseScreen;
-import no.sandramoen.libgdx38.utils.GameUtils;
 
 public class LevelScreen extends BaseScreen {
+
+    private boolean is_show_started = false;
+    private Array left_show_entities;
+    private Array right_show_entities;
+    private Array bottom_show_entities;
+    private EffectFirework effectFirework;
 
     private BaseActor overlay;
     private Background background;
@@ -45,6 +51,10 @@ public class LevelScreen extends BaseScreen {
         background.setZIndex(0);
         background.setWorldBounds(BaseGame.WORLD_WIDTH, BaseGame.WORLD_HEIGHT);
         //background.setWorldBounds(background);
+
+        left_show_entities = new Array();
+        right_show_entities = new Array();
+        bottom_show_entities = new Array();
     }
 
 
@@ -70,6 +80,10 @@ public class LevelScreen extends BaseScreen {
     public void update(float delta) {
         if (piece_being_moved != null)
             move_piece(piece_being_moved);
+
+        if (is_show_started && !AssetLoader.beethoven_ode_to_joy_music.isPlaying()) {
+            _stop_game_over_show();
+        }
     }
 
 
@@ -86,6 +100,8 @@ public class LevelScreen extends BaseScreen {
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.ESCAPE || keycode == Input.Keys.Q) {
             Gdx.app.exit();
+        } else if (keycode == Input.Keys.W) {
+            _stop_game_over_show();
         } else if (keycode == Input.Keys.S) {
             BaseGame.isGameOverShowEnabled = !BaseGame.isGameOverShowEnabled;
             if (BaseGame.isGameOverShowEnabled)
@@ -220,6 +236,8 @@ public class LevelScreen extends BaseScreen {
         if (!BaseGame.isGameOverShowEnabled)
             return;
 
+        is_show_started = true;
+
         float singing_start_delay = 2.1f;
         float beat_speed = 60f / 131.9f;
 
@@ -232,31 +250,30 @@ public class LevelScreen extends BaseScreen {
         ))));*/
 
         // camera shake
-        background.shakyCamIntensity = 0.0025f;
+        background.shakyCamIntensity = 0.0125f;
         background.addAction(Actions.sequence(
             Actions.delay(singing_start_delay),
+            Actions.run(() -> {
+                AssetLoader.firework_ambiant_music.setVolume(BaseGame.musicVolume);
+                AssetLoader.firework_ambiant_music.play();
+                start_holy_fire();
+            }),
             Actions.forever(Actions.sequence(
-                Actions.run(() -> background.isShakyCam = true),
+                Actions.run(() -> {
+                    background.isShakyCam = true;
+                }),
                 Actions.delay(beat_speed * 0.5f),
                 Actions.run(() -> {
                     //background.isShakyCam = false;
-                    EffectBurst effect = new EffectBurst();
-                    effect.setPosition(
-                        MathUtils.random(0f, BaseGame.WORLD_WIDTH),
-                        MathUtils.random(0f, BaseGame.WORLD_HEIGHT)
-                    );
-                    effect.setScale(0.005f);
-                    effect.setColor(GameUtils.randomLightColor());
-                    mainStage.addActor(effect);
-                    effect.start();
+                    start_a_firework();
                 }),
                 Actions.delay(beat_speed * 0.5f)
         ))));
 
         // audio
         AssetLoader.level_music.pause();
-        AssetLoader.fixed_forever_music.setVolume(BaseGame.musicVolume * 1.5f);
-        AssetLoader.fixed_forever_music.play();
+        AssetLoader.beethoven_ode_to_joy_music.setVolume(BaseGame.musicVolume * 1.5f);
+        AssetLoader.beethoven_ode_to_joy_music.play();
 
         // animation
 
@@ -282,9 +299,10 @@ public class LevelScreen extends BaseScreen {
         wheel.addAction(Actions.sequence(
             Actions.delay(0.5f),
             Actions.moveBy(0f, wheel.getHeight() / 8.5f, 1f, Interpolation.bounceOut),
-            Actions.forever(Actions.rotateBy(50f * wheel_direction, 1f))
+            Actions.forever(Actions.rotateBy(50f * wheel_direction, 0.25f))
         ));
         wheel.setZIndex(background.getZIndex() + 1);
+        bottom_show_entities.add(wheel);
 
         // angles
         BaseActor angel_0 = new BaseActor(0f, 0f, mainStage);
@@ -294,6 +312,7 @@ public class LevelScreen extends BaseScreen {
         angel_0.setPosition(BaseGame.WORLD_WIDTH, 0);
         angel_0.setOrigin(Align.center);
         angel_0.setZIndex(background.getZIndex() + 1);
+        right_show_entities.add(angel_0);
 
         float scale_to = 1.2f;
         float rotate_to = -5f;
@@ -322,6 +341,7 @@ public class LevelScreen extends BaseScreen {
         angel_1.setOrigin(Align.center);
         angel_1.flip();
         angel_1.setZIndex(background.getZIndex() + 1);
+        left_show_entities.add(angel_1);
 
         angel_1.addAction((Actions.sequence(
             Actions.delay(singing_start_delay * 0.25f),
@@ -339,6 +359,113 @@ public class LevelScreen extends BaseScreen {
                     )
                 )
             ))));
+    }
+
+
+    private void _stop_game_over_show() {
+        is_show_started = false;
+        background.isShakyCam = false;
+        background.clearActions();
+        AssetLoader.firework_ambiant_music.stop();
+        effectFirework.stop();
+
+        for (int i = 0; i < bottom_show_entities.size; i++) {
+            if (bottom_show_entities.get(i) instanceof ParticleActor) {
+                ((ParticleActor) bottom_show_entities.get(i)).clear();
+            } else if (bottom_show_entities.get(i) instanceof BaseActor) {
+                ((BaseActor) bottom_show_entities.get(i)).clearActions();
+                ((BaseActor) bottom_show_entities.get(i)).addAction(Actions.moveBy(0f, -((BaseActor) bottom_show_entities.get(i)).getHeight(), 10f));
+            }
+        }
+
+        for (int i = 0; i < left_show_entities.size; i++) {
+            if (left_show_entities.get(i) instanceof BaseActor) {
+                ((BaseActor) left_show_entities.get(i)).clearActions();
+                ((BaseActor) left_show_entities.get(i)).addAction(Actions.moveBy(-((BaseActor) left_show_entities.get(i)).getWidth(), 0f, 2f));
+            }
+        }
+
+        for (int i = 0; i < right_show_entities.size; i++) {
+            if (right_show_entities.get(i) instanceof BaseActor) {
+                ((BaseActor) right_show_entities.get(i)).clearActions();
+                ((BaseActor) right_show_entities.get(i)).addAction(Actions.moveBy(((BaseActor) right_show_entities.get(i)).getWidth(), 0f, 2f));
+            }
+        }
+    }
+
+
+    private void start_holy_fire() {
+        float scale = 0.05f;
+
+        EffectHolyFire effect_0 = new EffectHolyFire();
+        effect_0.setPosition(
+            2f,
+            0f
+        );
+        effect_0.setScale(scale);
+        mainStage.addActor(effect_0);
+        effect_0.setZIndex(1);
+        effect_0.addAction(Actions.sequence(
+            Actions.delay(MathUtils.random(0f, 2f)),
+            Actions.run(() -> effect_0.start())
+        ));
+
+        EffectHolyFire effect_1 = new EffectHolyFire();
+        effect_1.setPosition(
+            6f,
+            0f
+        );
+        effect_1.setScale(scale);
+        mainStage.addActor(effect_1);
+        effect_1.setZIndex(1);
+        effect_1.addAction(Actions.sequence(
+            Actions.delay(MathUtils.random(0f, 2f)),
+            Actions.run(() -> effect_1.start())
+        ));
+
+        EffectHolyFire effect_2 = new EffectHolyFire();
+        effect_2.setPosition(
+            10f,
+            0f
+        );
+        effect_2.setScale(scale);
+        mainStage.addActor(effect_2);
+        effect_2.setZIndex(1);
+        effect_2.addAction(Actions.sequence(
+            Actions.delay(MathUtils.random(0f, 2f)),
+            Actions.run(() -> effect_2.start())
+        ));
+
+        EffectHolyFire effect_3 = new EffectHolyFire();
+        effect_3.setPosition(
+            14f,
+            0f
+        );
+        effect_3.setScale(scale);
+        mainStage.addActor(effect_3);
+        effect_3.setZIndex(1);
+        effect_3.addAction(Actions.sequence(
+            Actions.delay(MathUtils.random(0f, 2f)),
+            Actions.run(() -> effect_3.start())
+        ));
+
+        bottom_show_entities.add(effect_0);
+        bottom_show_entities.add(effect_1);
+        bottom_show_entities.add(effect_2);
+        bottom_show_entities.add(effect_3);
+    }
+
+
+    private void start_a_firework() {
+        effectFirework = new EffectFirework();
+        effectFirework.setPosition(
+            MathUtils.random(0f, BaseGame.WORLD_WIDTH),
+            MathUtils.random(0f, BaseGame.WORLD_HEIGHT)
+        );
+        effectFirework.setScale(0.0015f);
+        mainStage.addActor(effectFirework);
+        effectFirework.setZIndex(1);
+        effectFirework.start();
     }
 
 

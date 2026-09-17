@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 
 import com.badlogic.gdx.utils.IntArray;
@@ -45,7 +44,7 @@ public class Fixable extends BaseActor {
         addAction(Actions.sequence(
             Actions.scaleTo(0f, 0f, REMOVE_DURATION),
             Actions.run(() -> {
-                AssetLoader.fixed_forever_music.stop();
+                AssetLoader.beethoven_ode_to_joy_music.stop();
                 GameUtils.playLoopingMusic(AssetLoader.level_music);
             }),
             Actions.removeActor()
@@ -68,6 +67,7 @@ public class Fixable extends BaseActor {
         addActor(piece);
         piece.setPosition(piece_stage_cords.x, piece_stage_cords.y);
     }
+
 
     public double rate() {
         double distance = 0.0;
