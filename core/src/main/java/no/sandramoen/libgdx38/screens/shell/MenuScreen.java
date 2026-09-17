@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
 
@@ -75,15 +76,13 @@ public class MenuScreen extends BaseScreen {
                 item = new Image(AssetLoader.textureAtlas.findRegion(BaseGame.brokens.get(i).image_path + "/shelf_image/shelf_image"));
             else {
                 Fixable fixable = BaseGame.brokens.get(i).fixed_fixable;
+                Stack stack = new Stack();
                 for(Piece piece : fixable.glued_pieces) {
-                    piece.setScale(1);
-                    Vector2 piece_stage_cords = new Vector2(piece.getX(), piece.getY());
-                    fixable.stageToLocalCoordinates(piece_stage_cords);
-                    fixable.addActor(piece);
-                    piece.setPosition(piece_stage_cords.x, piece_stage_cords.y);
+                    piece.setScale(40);
+                    stack.add(piece);
                 }
                 System.out.println(fixable);
-                item = fixable;
+                item = stack;
             }
             int finalI = i;
             item.addListener(new InputListener(){
