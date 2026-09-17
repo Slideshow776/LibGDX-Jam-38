@@ -40,7 +40,7 @@ public class MenuScreen extends BaseScreen {
         }
 
         // overlay
-        BaseActor overlay = new Background("whitePixel", uiStage);
+        overlay = new Background("whitePixel", uiStage);
         overlay.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         overlay.setColor(Color.BLACK);
         overlay.addAction(Actions.sequence(Actions.fadeOut(0.25f)));
@@ -159,6 +159,8 @@ public class MenuScreen extends BaseScreen {
         effect.setScale(0.00125f);
         mainStage.addActor(effect);
         effect.start();
+
+        overlay.setOpacity(0f);
 
         return super.touchDown(screenX, screenY, pointer, button);
     }

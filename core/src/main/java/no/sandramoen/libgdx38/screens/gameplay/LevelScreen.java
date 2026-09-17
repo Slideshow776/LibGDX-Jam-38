@@ -63,7 +63,7 @@ public class LevelScreen extends BaseScreen {
         // audio
 
         // actors
-        BaseActor overlay = new Background("whitePixel", uiStage);
+        overlay = new Background("whitePixel", uiStage);
         overlay.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         overlay.setColor(Color.BLACK);
         overlay.addAction(Actions.sequence(Actions.fadeOut(0.25f)));
@@ -131,6 +131,8 @@ public class LevelScreen extends BaseScreen {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Vector2 world_position = mainStage.screenToStageCoordinates(new Vector2(screenX, screenY));
+
+        overlay.setOpacity(0f);
 
         // particle effect
         EffectBurst effect = new EffectBurst();
@@ -367,7 +369,8 @@ public class LevelScreen extends BaseScreen {
         background.isShakyCam = false;
         background.clearActions();
         AssetLoader.firework_ambiant_music.stop();
-        effectFirework.stop();
+        if (effectFirework != null)
+            effectFirework.stop();
 
         for (int i = 0; i < bottom_show_entities.size; i++) {
             if (bottom_show_entities.get(i) instanceof ParticleActor) {
