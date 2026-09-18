@@ -288,6 +288,10 @@ public class LevelScreen extends BaseScreen {
         overlay_show.setColor(new Color(0f, 0f, 0f, 0.5f));
         overlay_show.setZIndex(background.getZIndex() + 1);*/
 
+        // funny guys
+        _right_side_funny_guys(singing_start_delay, beat_speed);
+        _left_side_funny_guys(singing_start_delay, beat_speed);
+
         // wheel
         float wheel_direction = 1f;
         if (MathUtils.randomBoolean())
@@ -305,62 +309,191 @@ public class LevelScreen extends BaseScreen {
         ));
         wheel.setZIndex(background.getZIndex() + 1);
         bottom_show_entities.add(wheel);
+    }
 
-        // angles
-        BaseActor angel_0 = new BaseActor(0f, 0f, mainStage);
-        angel_0.setTouchable(Touchable.disabled);
-        angel_0.loadImage("angel_trumpet");
-        angel_0.setSize(8, 8);
-        angel_0.setPosition(BaseGame.WORLD_WIDTH, 0);
-        angel_0.setOrigin(Align.center);
-        angel_0.setZIndex(background.getZIndex() + 1);
-        right_show_entities.add(angel_0);
 
-        float scale_to = 1.2f;
-        float rotate_to = -5f;
-        angel_0.addAction((Actions.sequence(
-            Actions.delay(singing_start_delay * 0.25f),
-            Actions.moveTo(BaseGame.WORLD_WIDTH - angel_0.getWidth() * 0.6f, 0f, singing_start_delay * 0.5f, Interpolation.bounceOut),
-            Actions.delay(singing_start_delay * 0.25f),
-            Actions.forever(
-                Actions.parallel(
-                    Actions.sequence(
-                        Actions.scaleTo(scale_to, scale_to, beat_speed / 2f),
-                        Actions.scaleTo(1f, 1f, beat_speed / 2f)
-                    ),
-                    Actions.sequence(
-                        Actions.rotateTo(rotate_to, beat_speed / 2f),
-                        Actions.rotateTo(0f, beat_speed / 2f)
-                    )
-                )
-        ))));
+    private void _left_side_funny_guys(float singing_start_delay, float beat_speed) {
+        float height_modifier = 0.025f;
+        for (int i = 0; i < 2; i++) {
+            float move_delay = MathUtils.random(0.4f, 0.6f);
+            float remainder_delay = 0.75f - move_delay;
+            FunnyGuys f0 = new FunnyGuys(6 + BaseGame.WORLD_WIDTH + i * 0.5f, BaseGame.WORLD_HEIGHT * height_modifier * i, mainStage, background.getZIndex() + 1, false);
+            f0.setPosition(-6f - f0.getWidth() - i * 0.5f, BaseGame.WORLD_HEIGHT * height_modifier * i);
+            f0.addAction((Actions.sequence(
+                Actions.delay(singing_start_delay * 0.25f),
+                Actions.moveBy(BaseGame.WORLD_WIDTH * 0.5f, 0f, singing_start_delay * move_delay, Interpolation.bounceOut),
+                Actions.delay(singing_start_delay * remainder_delay),
+                Actions.run(() -> f0.start_sing_animation(beat_speed))
+            )));
+            left_show_entities.add(f0);
+        }
+        for (int i = 0; i < 4; i++) {
+            float move_delay = MathUtils.random(0.4f, 0.6f);
+            float remainder_delay = 0.75f - move_delay;
+            FunnyGuys f0 = new FunnyGuys(5 + BaseGame.WORLD_WIDTH + i * 0.5f, BaseGame.WORLD_HEIGHT * height_modifier * i, mainStage, background.getZIndex() + 1, false);
+            f0.setPosition(-5f - f0.getWidth() - i * 0.5f, BaseGame.WORLD_HEIGHT * height_modifier * i);
+            f0.addAction((Actions.sequence(
+                Actions.delay(singing_start_delay * 0.25f),
+                Actions.moveBy(BaseGame.WORLD_WIDTH * 0.5f, 0f, singing_start_delay * move_delay, Interpolation.bounceOut),
+                Actions.delay(singing_start_delay * remainder_delay),
+                Actions.run(() -> f0.start_sing_animation(beat_speed))
+            )));
+            left_show_entities.add(f0);
+        }
+        for (int i = 0; i < 6; i++) {
+            float move_delay = MathUtils.random(0.4f, 0.6f);
+            float remainder_delay = 0.75f - move_delay;
+            FunnyGuys f0 = new FunnyGuys(4 + BaseGame.WORLD_WIDTH + i * 0.5f, BaseGame.WORLD_HEIGHT * height_modifier * i, mainStage, background.getZIndex() + 1, false);
+            f0.setPosition(-4f - f0.getWidth() - i * 0.5f, BaseGame.WORLD_HEIGHT * height_modifier * i);
+            f0.addAction((Actions.sequence(
+                Actions.delay(singing_start_delay * 0.25f),
+                Actions.moveBy(BaseGame.WORLD_WIDTH * 0.5f, 0f, singing_start_delay * move_delay, Interpolation.bounceOut),
+                Actions.delay(singing_start_delay * remainder_delay),
+                Actions.run(() -> f0.start_sing_animation(beat_speed))
+            )));
+            left_show_entities.add(f0);
+        }
+        for (int i = 0; i < 8; i++) {
+            float move_delay = MathUtils.random(0.4f, 0.6f);
+            float remainder_delay = 0.75f - move_delay;
+            FunnyGuys f0 = new FunnyGuys(3 + BaseGame.WORLD_WIDTH + i * 0.5f, BaseGame.WORLD_HEIGHT * height_modifier * i, mainStage, background.getZIndex() + 1, false);
+            f0.setPosition(-3f - f0.getWidth() - i * 0.5f, BaseGame.WORLD_HEIGHT * height_modifier * i);
+            f0.addAction((Actions.sequence(
+                Actions.delay(singing_start_delay * 0.25f),
+                Actions.moveBy(BaseGame.WORLD_WIDTH * 0.5f, 0f, singing_start_delay * move_delay, Interpolation.bounceOut),
+                Actions.delay(singing_start_delay * remainder_delay),
+                Actions.run(() -> f0.start_sing_animation(beat_speed))
+            )));
+            left_show_entities.add(f0);
+        }
+        for (int i = 0; i < 10; i++) {
+            float move_delay = MathUtils.random(0.4f, 0.6f);
+            float remainder_delay = 0.75f - move_delay;
+            FunnyGuys f0 = new FunnyGuys(2 + BaseGame.WORLD_WIDTH + i * 0.5f, BaseGame.WORLD_HEIGHT * height_modifier * i, mainStage, background.getZIndex() + 1, false);
+            f0.setPosition(-2f - f0.getWidth() - i * 0.5f, BaseGame.WORLD_HEIGHT * height_modifier * i);
+            f0.addAction((Actions.sequence(
+                Actions.delay(singing_start_delay * 0.25f),
+                Actions.moveBy(BaseGame.WORLD_WIDTH * 0.5f, 0f, singing_start_delay * move_delay, Interpolation.bounceOut),
+                Actions.delay(singing_start_delay * remainder_delay),
+                Actions.run(() -> f0.start_sing_animation(beat_speed))
+            )));
+            left_show_entities.add(f0);
+        }
+        for (int i = 0; i < 14; i++) {
+            float move_delay = MathUtils.random(0.4f, 0.6f);
+            float remainder_delay = 0.75f - move_delay;
+            FunnyGuys f0 = new FunnyGuys(1 + BaseGame.WORLD_WIDTH + i * 0.5f, BaseGame.WORLD_HEIGHT * height_modifier * i, mainStage, background.getZIndex() + 1, false);
+            f0.setPosition(-1f - f0.getWidth() - i * 0.5f, BaseGame.WORLD_HEIGHT * height_modifier * i);
+            f0.addAction((Actions.sequence(
+                Actions.delay(singing_start_delay * 0.25f),
+                Actions.moveBy(BaseGame.WORLD_WIDTH * 0.5f, 0f, singing_start_delay * move_delay, Interpolation.bounceOut),
+                Actions.delay(singing_start_delay * remainder_delay),
+                Actions.run(() -> f0.start_sing_animation(beat_speed))
+            )));
+            left_show_entities.add(f0);
+        }
+        for (int i = 0; i < 14; i++) {
+            float move_delay = MathUtils.random(0.4f, 0.6f);
+            float remainder_delay = 0.75f - move_delay;
+            FunnyGuys f0 = new FunnyGuys(BaseGame.WORLD_WIDTH + i * 0.5f, BaseGame.WORLD_HEIGHT * height_modifier * i, mainStage, background.getZIndex() + 1, false);
+            f0.setPosition(-0f - f0.getWidth() - i * 0.5f, BaseGame.WORLD_HEIGHT * height_modifier * i);
+            f0.addAction((Actions.sequence(
+                Actions.delay(singing_start_delay * 0.25f),
+                Actions.moveBy(BaseGame.WORLD_WIDTH * 0.5f, 0f, singing_start_delay * move_delay, Interpolation.bounceOut),
+                Actions.delay(singing_start_delay * remainder_delay),
+                Actions.run(() -> f0.start_sing_animation(beat_speed))
+            )));
+            left_show_entities.add(f0);
+        }
+    }
 
-        BaseActor angel_1 = new BaseActor(0f, 0f, mainStage);
-        angel_1.setTouchable(Touchable.disabled);
-        angel_1.loadImage("angel_trumpet");
-        angel_1.setSize(8, 8);
-        angel_1.setPosition(0f - angel_1.getWidth(), 0);
-        angel_1.setOrigin(Align.center);
-        angel_1.flip();
-        angel_1.setZIndex(background.getZIndex() + 1);
-        left_show_entities.add(angel_1);
 
-        angel_1.addAction((Actions.sequence(
-            Actions.delay(singing_start_delay * 0.25f),
-            Actions.moveTo(0f - angel_1.getWidth() * 0.4f, 0f, singing_start_delay * 0.5f, Interpolation.bounceOut),
-            Actions.delay(singing_start_delay * 0.25f),
-            Actions.forever(
-                Actions.parallel(
-                    Actions.sequence(
-                        Actions.scaleTo(scale_to, scale_to, beat_speed / 2f),
-                        Actions.scaleTo(1f, 1f, beat_speed / 2f)
-                    ),
-                    Actions.sequence(
-                        Actions.rotateTo(-rotate_to, beat_speed / 2f),
-                        Actions.rotateTo(0f, beat_speed / 2f)
-                    )
-                )
-            ))));
+    private void _right_side_funny_guys(float singing_start_delay, float beat_speed) {
+        float height_modifier = 0.025f;
+        for (int i = 0; i < 2; i++) {
+            float move_delay = MathUtils.random(0.4f, 0.6f);
+            float remainder_delay = 0.75f - move_delay;
+            FunnyGuys f0 = new FunnyGuys(6 + BaseGame.WORLD_WIDTH + i * 0.5f, BaseGame.WORLD_HEIGHT * height_modifier * i, mainStage, background.getZIndex() + 1, true);
+            f0.addAction((Actions.sequence(
+                Actions.delay(singing_start_delay * 0.25f),
+                Actions.moveBy(-BaseGame.WORLD_WIDTH * 0.5f, 0f, singing_start_delay * move_delay, Interpolation.bounceOut),
+                Actions.delay(singing_start_delay * remainder_delay),
+                Actions.run(() -> f0.start_sing_animation(beat_speed))
+            )));
+            right_show_entities.add(f0);
+        }
+        for (int i = 0; i < 4; i++) {
+            float move_delay = MathUtils.random(0.4f, 0.6f);
+            float remainder_delay = 0.75f - move_delay;
+            FunnyGuys f0 = new FunnyGuys(5 + BaseGame.WORLD_WIDTH + i * 0.5f, BaseGame.WORLD_HEIGHT * height_modifier * i, mainStage, background.getZIndex() + 1, true);
+            f0.addAction((Actions.sequence(
+                Actions.delay(singing_start_delay * 0.25f),
+                Actions.moveBy(-BaseGame.WORLD_WIDTH * 0.5f, 0f, singing_start_delay * move_delay, Interpolation.bounceOut),
+                Actions.delay(singing_start_delay * remainder_delay),
+                Actions.run(() -> f0.start_sing_animation(beat_speed))
+            )));
+            right_show_entities.add(f0);
+        }
+        for (int i = 0; i < 6; i++) {
+            float move_delay = MathUtils.random(0.4f, 0.6f);
+            float remainder_delay = 0.75f - move_delay;
+            FunnyGuys f0 = new FunnyGuys(4 + BaseGame.WORLD_WIDTH + i * 0.5f, BaseGame.WORLD_HEIGHT * height_modifier * i, mainStage, background.getZIndex() + 1, true);
+            f0.addAction((Actions.sequence(
+                Actions.delay(singing_start_delay * 0.25f),
+                Actions.moveBy(-BaseGame.WORLD_WIDTH * 0.5f, 0f, singing_start_delay * move_delay, Interpolation.bounceOut),
+                Actions.delay(singing_start_delay * remainder_delay),
+                Actions.run(() -> f0.start_sing_animation(beat_speed))
+            )));
+            right_show_entities.add(f0);
+        }
+        for (int i = 0; i < 8; i++) {
+            float move_delay = MathUtils.random(0.4f, 0.6f);
+            float remainder_delay = 0.75f - move_delay;
+            FunnyGuys f0 = new FunnyGuys(3 + BaseGame.WORLD_WIDTH + i * 0.5f, BaseGame.WORLD_HEIGHT * height_modifier * i, mainStage, background.getZIndex() + 1, true);
+            f0.addAction((Actions.sequence(
+                Actions.delay(singing_start_delay * 0.25f),
+                Actions.moveBy(-BaseGame.WORLD_WIDTH * 0.5f, 0f, singing_start_delay * move_delay, Interpolation.bounceOut),
+                Actions.delay(singing_start_delay * remainder_delay),
+                Actions.run(() -> f0.start_sing_animation(beat_speed))
+            )));
+            right_show_entities.add(f0);
+        }
+        for (int i = 0; i < 10; i++) {
+            float move_delay = MathUtils.random(0.4f, 0.6f);
+            float remainder_delay = 0.75f - move_delay;
+            FunnyGuys f0 = new FunnyGuys(2 + BaseGame.WORLD_WIDTH + i * 0.5f, BaseGame.WORLD_HEIGHT * height_modifier * i, mainStage, background.getZIndex() + 1, true);
+            f0.addAction((Actions.sequence(
+                Actions.delay(singing_start_delay * 0.25f),
+                Actions.moveBy(-BaseGame.WORLD_WIDTH * 0.5f, 0f, singing_start_delay * move_delay, Interpolation.bounceOut),
+                Actions.delay(singing_start_delay * remainder_delay),
+                Actions.run(() -> f0.start_sing_animation(beat_speed))
+            )));
+            right_show_entities.add(f0);
+        }
+        for (int i = 0; i < 14; i++) {
+            float move_delay = MathUtils.random(0.4f, 0.6f);
+            float remainder_delay = 0.75f - move_delay;
+            FunnyGuys f0 = new FunnyGuys(1 + BaseGame.WORLD_WIDTH + i * 0.5f, BaseGame.WORLD_HEIGHT * height_modifier * i, mainStage, background.getZIndex() + 1, true);
+            f0.addAction((Actions.sequence(
+                Actions.delay(singing_start_delay * 0.25f),
+                Actions.moveBy(-BaseGame.WORLD_WIDTH * 0.5f, 0f, singing_start_delay * move_delay, Interpolation.bounceOut),
+                Actions.delay(singing_start_delay * remainder_delay),
+                Actions.run(() -> f0.start_sing_animation(beat_speed))
+            )));
+            right_show_entities.add(f0);
+        }
+        for (int i = 0; i < 14; i++) {
+            float move_delay = MathUtils.random(0.4f, 0.6f);
+            float remainder_delay = 0.75f - move_delay;
+            FunnyGuys f0 = new FunnyGuys(BaseGame.WORLD_WIDTH + i * 0.5f, BaseGame.WORLD_HEIGHT * height_modifier * i, mainStage, background.getZIndex() + 1, true);
+            f0.addAction((Actions.sequence(
+                Actions.delay(singing_start_delay * 0.25f),
+                Actions.moveBy(-BaseGame.WORLD_WIDTH * 0.5f, 0f, singing_start_delay * move_delay, Interpolation.bounceOut),
+                Actions.delay(singing_start_delay * remainder_delay),
+                Actions.run(() -> f0.start_sing_animation(beat_speed))
+            )));
+            right_show_entities.add(f0);
+        }
     }
 
 
@@ -384,14 +517,14 @@ public class LevelScreen extends BaseScreen {
         for (int i = 0; i < left_show_entities.size; i++) {
             if (left_show_entities.get(i) instanceof BaseActor) {
                 ((BaseActor) left_show_entities.get(i)).clearActions();
-                ((BaseActor) left_show_entities.get(i)).addAction(Actions.moveBy(-((BaseActor) left_show_entities.get(i)).getWidth(), 0f, 2f));
+                ((BaseActor) left_show_entities.get(i)).addAction(Actions.moveBy(-((BaseActor) left_show_entities.get(i)).getWidth() * (i + 1), 0f, 2f));
             }
         }
 
         for (int i = 0; i < right_show_entities.size; i++) {
             if (right_show_entities.get(i) instanceof BaseActor) {
                 ((BaseActor) right_show_entities.get(i)).clearActions();
-                ((BaseActor) right_show_entities.get(i)).addAction(Actions.moveBy(((BaseActor) right_show_entities.get(i)).getWidth(), 0f, 2f));
+                ((BaseActor) right_show_entities.get(i)).addAction(Actions.moveBy(((BaseActor) right_show_entities.get(i)).getWidth() * (i + 1), 0f, 2f));
             }
         }
     }
