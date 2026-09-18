@@ -40,7 +40,7 @@ public class Piece extends BaseActor {
             direction = MathUtils.randomSign(); // returns -1 or 1
 
         rotation_action = Actions.forever(Actions.rotateBy(
-                MathUtils.random(20f, 200f) * direction,
+                MathUtils.random(20f, 150f) * direction,
                 1f
         ));
         addAction(rotation_action);

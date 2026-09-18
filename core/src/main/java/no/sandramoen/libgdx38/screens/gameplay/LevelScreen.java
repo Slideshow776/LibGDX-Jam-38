@@ -252,7 +252,7 @@ public class LevelScreen extends BaseScreen {
         ))));*/
 
         // camera shake
-        background.shakyCamIntensity = 0.0125f;
+        background.shakyCamIntensity = 0.025f;
         background.addAction(Actions.sequence(
             Actions.delay(singing_start_delay),
             Actions.run(() -> {
@@ -398,64 +398,22 @@ public class LevelScreen extends BaseScreen {
 
 
     private void start_holy_fire() {
-        float scale = 0.05f;
-
-        EffectHolyFire effect_0 = new EffectHolyFire();
-        effect_0.setPosition(
-            2f,
-            0f
-        );
-        effect_0.setScale(scale);
-        mainStage.addActor(effect_0);
-        effect_0.setZIndex(1);
-        effect_0.addAction(Actions.sequence(
-            Actions.delay(MathUtils.random(0f, 2f)),
-            Actions.run(() -> effect_0.start())
-        ));
-
-        EffectHolyFire effect_1 = new EffectHolyFire();
-        effect_1.setPosition(
-            6f,
-            0f
-        );
-        effect_1.setScale(scale);
-        mainStage.addActor(effect_1);
-        effect_1.setZIndex(1);
-        effect_1.addAction(Actions.sequence(
-            Actions.delay(MathUtils.random(0f, 2f)),
-            Actions.run(() -> effect_1.start())
-        ));
-
-        EffectHolyFire effect_2 = new EffectHolyFire();
-        effect_2.setPosition(
-            10f,
-            0f
-        );
-        effect_2.setScale(scale);
-        mainStage.addActor(effect_2);
-        effect_2.setZIndex(1);
-        effect_2.addAction(Actions.sequence(
-            Actions.delay(MathUtils.random(0f, 2f)),
-            Actions.run(() -> effect_2.start())
-        ));
-
-        EffectHolyFire effect_3 = new EffectHolyFire();
-        effect_3.setPosition(
-            14f,
-            0f
-        );
-        effect_3.setScale(scale);
-        mainStage.addActor(effect_3);
-        effect_3.setZIndex(1);
-        effect_3.addAction(Actions.sequence(
-            Actions.delay(MathUtils.random(0f, 2f)),
-            Actions.run(() -> effect_3.start())
-        ));
-
-        bottom_show_entities.add(effect_0);
-        bottom_show_entities.add(effect_1);
-        bottom_show_entities.add(effect_2);
-        bottom_show_entities.add(effect_3);
+        for (int i = 0; i <= 16; i++) {
+            EffectHolyFire effect = new EffectHolyFire();
+            effect.setPosition(
+                i,
+                -1f
+            );
+            effect.setScale(0.015f);
+            mainStage.addActor(effect);
+            effect.stop();
+            effect.setZIndex(1);
+            effect.addAction(Actions.sequence(
+                Actions.delay(MathUtils.random(0f, 0.5f)),
+                Actions.run(() -> effect.start())
+            ));
+            bottom_show_entities.add(effect);
+        }
     }
 
 

@@ -107,9 +107,9 @@ public abstract class BaseGame extends Game implements AssetErrorListener {
 
 
     public static void create_glue_cursor() {
-        Pixmap pixmap = new Pixmap(Gdx.files.internal("images/excluded/cursor.png"));
+        Pixmap pixmap = new Pixmap(Gdx.files.internal("images/excluded/cursor glue.png"));
         //pixmap.setFilter(Pixmap.Filter.BiLinear);
-        int xHotspot = 1, yHotspot = 38;
+        int xHotspot = 1, yHotspot = 46;
         Cursor cursor = Gdx.graphics.newCursor(pixmap, xHotspot, yHotspot);
         pixmap.dispose();
         Gdx.graphics.setCursor(cursor);
@@ -117,9 +117,9 @@ public abstract class BaseGame extends Game implements AssetErrorListener {
 
 
     public static void create_select_cursor() {
-        Pixmap pixmap = new Pixmap(Gdx.files.internal("images/excluded/select_cursor.png"));
+        Pixmap pixmap = new Pixmap(Gdx.files.internal("images/excluded/cursor tool.png"));
         //pixmap.setFilter(Pixmap.Filter.BiLinear);
-        int xHotspot = 5, yHotspot = 2;
+        int xHotspot = 10, yHotspot = 1;
         Cursor cursor = Gdx.graphics.newCursor(pixmap, xHotspot, yHotspot);
         pixmap.dispose();
         Gdx.graphics.setCursor(cursor);
