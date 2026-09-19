@@ -1,18 +1,29 @@
 package no.sandramoen.libgdx38.actors;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import no.sandramoen.libgdx38.utils.AssetLoader;
+import no.sandramoen.libgdx38.utils.GameUtils;
 
 public class DisplayShelfImage extends Image {
+    public boolean is_glow_enabled = false;
+
+    private float time;
+    private ShaderProgram shaderProgram;
 
     public DisplayShelfImage(String region_name) {
         super(AssetLoader.textureAtlas.findRegion(region_name));
         _start_hover_animation();
+        setDebug(true);
+
+        shaderProgram = GameUtils.initShaderProgram(AssetLoader.defaultShader, AssetLoader.glowShader);
     }
 
 
@@ -64,5 +75,29 @@ public class DisplayShelfImage extends Image {
         else
             random_interpolation = Interpolation.exp10;
         return random_interpolation;
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        time += delta;
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        if(!is_glow_enabled)
+            super.draw(batch, parentAlpha);
+        else {
+            try {
+                batch.setShader(shaderProgram);
+                shaderProgram.setUniformf("u_time", time * .25f);
+                shaderProgram.setUniformf("u_imageSize", new Vector2(getWidth(), getHeight()));
+                shaderProgram.setUniformf("u_glowRadius", 0.1f);
+                super.draw(batch, parentAlpha);
+                batch.setShader(null);
+            } catch (Throwable error) {
+                super.draw(batch, parentAlpha);
+            }
+        }
     }
 }

@@ -24,6 +24,7 @@ public class AssetLoader implements AssetErrorListener {
     public static String defaultShader;
     public static String shockwaveShader;
     public static String backgroundShader;
+    public static String glowShader;
 
     public static Array<Sound> wheel_sounds;
     public static Array<Sound> glue_sounds;
@@ -35,6 +36,7 @@ public class AssetLoader implements AssetErrorListener {
     public static Music level_music;
     public static Music firework_ambiant_music;
     public static Music beethoven_ode_to_joy_music;
+
 
     static {
         long time = System.currentTimeMillis();
@@ -91,6 +93,7 @@ public class AssetLoader implements AssetErrorListener {
         no.sandramoen.libgdx38.utils.BaseGame.assetManager.load(new AssetDescriptor("shaders/default.vs", no.sandramoen.libgdx38.utils.Text.class, new no.sandramoen.libgdx38.utils.TextLoader.TextParameter()));
         no.sandramoen.libgdx38.utils.BaseGame.assetManager.load(new AssetDescriptor("shaders/shockwave.fs", no.sandramoen.libgdx38.utils.Text.class, new no.sandramoen.libgdx38.utils.TextLoader.TextParameter()));
         no.sandramoen.libgdx38.utils.BaseGame.assetManager.load(new AssetDescriptor("shaders/voronoi.fs", no.sandramoen.libgdx38.utils.Text.class, new no.sandramoen.libgdx38.utils.TextLoader.TextParameter()));
+        no.sandramoen.libgdx38.utils.BaseGame.assetManager.load(new AssetDescriptor("shaders/glow-pulse.fs", no.sandramoen.libgdx38.utils.Text.class, new no.sandramoen.libgdx38.utils.TextLoader.TextParameter()));
 
         // skins
 
@@ -136,6 +139,7 @@ public class AssetLoader implements AssetErrorListener {
         defaultShader = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("shaders/default.vs", no.sandramoen.libgdx38.utils.Text.class).getString();
         shockwaveShader = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("shaders/shockwave.fs", no.sandramoen.libgdx38.utils.Text.class).getString();
         backgroundShader = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("shaders/voronoi.fs", no.sandramoen.libgdx38.utils.Text.class).getString();
+        glowShader = no.sandramoen.libgdx38.utils.BaseGame.assetManager.get("shaders/glow-pulse.fs", no.sandramoen.libgdx38.utils.Text.class).getString();
 
         // skins
         mySkin = new FWSkin(Gdx.files.internal("skins/mySkin/mySkin.json"));
