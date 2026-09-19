@@ -118,7 +118,9 @@ public class MenuScreen extends BaseScreen {
                 }
             });
 
-            display_shelf.add(item).width(Gdx.graphics.getWidth() * 0.83f / 3f)
+            display_shelf.add(item)
+                .width(Gdx.graphics.getWidth() * 0.83f / 3f)
+                .height(Gdx.graphics.getHeight() * 0.84f / 2f)
                 .spaceBottom(Gdx.graphics.getHeight() * 0.05f)
             ;
         }
