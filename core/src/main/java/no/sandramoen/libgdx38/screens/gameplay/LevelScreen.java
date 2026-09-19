@@ -24,6 +24,7 @@ import no.sandramoen.libgdx38.utils.AssetLoader;
 import no.sandramoen.libgdx38.utils.BaseActor;
 import no.sandramoen.libgdx38.utils.BaseGame;
 import no.sandramoen.libgdx38.utils.BaseScreen;
+import no.sandramoen.libgdx38.utils.GameUtils;
 
 public class LevelScreen extends BaseScreen {
 
@@ -531,12 +532,16 @@ public class LevelScreen extends BaseScreen {
 
 
     private void start_holy_fire() {
-        for (int i = 0; i <= 16; i++) {
+        int count = 17;
+        for (int i = 0; i < count; i++) {
             EffectHolyFire effect = new EffectHolyFire();
-            effect.setPosition(
-                i,
-                -1f
-            );
+
+            float normalized_i = GameUtils.normalizeValue(i, 0, count - 1);
+            float curve = Math.abs(2 * normalized_i - 1f);
+            float y = -3f + 5f * curve;
+            effect.setPosition(i, y);
+            System.out.println(y);
+
             effect.setScale(0.015f);
             mainStage.addActor(effect);
             effect.stop();

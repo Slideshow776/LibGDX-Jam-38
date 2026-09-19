@@ -90,8 +90,10 @@ public class MenuScreen extends BaseScreen {
             item.addListener(new InputListener() {
                 @Override
                 public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                    if (item instanceof DisplayShelfImage)
+                    if (item instanceof DisplayShelfImage) {
                         ((DisplayShelfImage) item).is_glow_enabled = true;
+                        ((DisplayShelfImage) item).ceramic_sound.play(BaseGame.soundVolume, ((DisplayShelfImage) item).ceramic_sound_pitch + MathUtils.random(-0.1f, 0.1f), 0f);
+                    }
                     effect = new EffectHolyFireNoGravity();
 
                     Vector2 position = item.localToStageCoordinates(new Vector2(item.getWidth() / 2f, item.getHeight() / 2f));
@@ -110,8 +112,9 @@ public class MenuScreen extends BaseScreen {
                 public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                     super.exit(event, x, y, pointer, toActor);
                     effect.stop();
-                    if (item instanceof DisplayShelfImage)
+                    if (item instanceof DisplayShelfImage) {
                         ((DisplayShelfImage) item).is_glow_enabled = false;
+                    }
                 }
             });
 
