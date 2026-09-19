@@ -64,7 +64,6 @@ public class MenuScreen extends BaseScreen {
             Actor item;
             if(broken.fixed_fixable == null || !broken.fixed_fixable.hasChildren()) {
                 item = new DisplayShelfImage(broken.image_path + "/" + MathUtils.random(0, broken.num_pieces - 1));
-                item.setOrigin(Align.center);
             } else {
                 Fixable fixable = broken.fixed_fixable;
                 fixable.clearActions();
@@ -132,6 +131,10 @@ public class MenuScreen extends BaseScreen {
             .padLeft(Gdx.graphics.getWidth() * 0.09f)
             .expand()
         ;
+
+        for(Actor item : display_shelf.getChildren()){
+            item.setOrigin(Gdx.graphics.getWidth() * 0.83f / 3f * 0.5f, Gdx.graphics.getHeight() * 0.84f / 2f * 0.5f);
+        }
 
         if(BaseGame.DEBUG) uiTable.debugAll();
     }
