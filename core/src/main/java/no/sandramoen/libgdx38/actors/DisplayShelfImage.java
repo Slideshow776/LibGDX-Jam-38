@@ -1,6 +1,7 @@
 package no.sandramoen.libgdx38.actors;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Interpolation;
@@ -14,6 +15,8 @@ import no.sandramoen.libgdx38.utils.GameUtils;
 
 public class DisplayShelfImage extends Image {
     public boolean is_glow_enabled = false;
+    public Sound ceramic_sound = AssetLoader.ceramic_sounds.get(MathUtils.random(0, AssetLoader.ceramic_sounds.size - 1));
+    public float ceramic_sound_pitch = MathUtils.random(0.5f, 1.5f);
 
     private float time;
     private ShaderProgram shaderProgram;
