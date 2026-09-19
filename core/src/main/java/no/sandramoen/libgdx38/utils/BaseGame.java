@@ -62,19 +62,6 @@ public abstract class BaseGame extends Game implements AssetErrorListener {
         brokens.add(new CatMug());
         brokens.add(new CatMug());
         brokens.add(new CatMug());
-        brokens.add(new CatMug());
-        brokens.add(new CatMug());
-        brokens.add(new CatMug());
-        brokens.add(new CatMug());
-        brokens.add(new CatMug());
-        brokens.add(new CatMug());
-        brokens.add(new CatMug());
-        brokens.add(new CatMug());
-        brokens.add(new CatMug());
-        brokens.add(new CatMug());
-        brokens.add(new CatMug());
-        brokens.add(new CatMug());
-        brokens.add(new CatMug());
 
     }
 

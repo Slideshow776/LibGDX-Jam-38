@@ -1,7 +1,6 @@
 package no.sandramoen.libgdx38.screens.shell;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
@@ -9,12 +8,15 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import no.sandramoen.libgdx38.actors.Background;
+import no.sandramoen.libgdx38.actors.DisplayShelfImage;
 import no.sandramoen.libgdx38.actors.Fixable;
+import no.sandramoen.libgdx38.actors.broken.Broken;
 import no.sandramoen.libgdx38.actors.particles.EffectBurst;
+import no.sandramoen.libgdx38.actors.particles.EffectHolyFire;
+import no.sandramoen.libgdx38.actors.particles.EffectHolyFireNoGravity;
 import no.sandramoen.libgdx38.screens.gameplay.LevelScreen;
 import no.sandramoen.libgdx38.utils.AssetLoader;
 import no.sandramoen.libgdx38.utils.BaseActor;
@@ -26,6 +28,7 @@ import no.sandramoen.libgdx38.utils.GameUtils;
 public class MenuScreen extends BaseScreen {
 
     private BaseActor overlay;
+    private EffectHolyFireNoGravity effect;
 
     @Override
     public void initialize() {
@@ -35,9 +38,8 @@ public class MenuScreen extends BaseScreen {
         // audio
         GameUtils.setMusicVolume(0.4f); // TODO: tweak for release/publish
         GameUtils.playLoopingMusic(AssetLoader.level_music);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++)
             AssetLoader.wheel_sounds.get(i).stop();
-        }
 
         // overlay
         overlay = new Background("whitePixel", uiStage);
@@ -48,25 +50,21 @@ public class MenuScreen extends BaseScreen {
         // background
         BaseActor background = new BaseActor(0f, 0f, mainStage);
         background.setTouchable(Touchable.disabled);
-
         background.loadImage("shelf");
-
         background.setSize(BaseGame.WORLD_WIDTH, BaseGame.WORLD_HEIGHT);
-        background.setColor(new Color(0x567560FF));
 
+        // display shelf
         Table display_shelf = new Table();
-
         for (int i = 0; i < BaseGame.brokens.size; i++) {
-            if (i % 5 == 0)
+            if (i % 3 == 0)
                 display_shelf.row();
 
-            float shelf_width = 0.17f;
-            float shelf_height = 0.18f;
+            Broken broken = BaseGame.brokens.get(i);
             Actor item;
-            if(BaseGame.brokens.get(i).fixed_fixable == null || !BaseGame.brokens.get(i).fixed_fixable.hasChildren())
-                item = new Image(AssetLoader.textureAtlas.findRegion(BaseGame.brokens.get(i).image_path + "/shelf_image/shelf_image"));
-            else {
-                Fixable fixable = BaseGame.brokens.get(i).fixed_fixable;
+            if(broken.fixed_fixable == null || !broken.fixed_fixable.hasChildren()) {
+                item = new DisplayShelfImage(broken.image_path + "/" + MathUtils.random(0, broken.num_pieces - 1));
+            } else {
+                Fixable fixable = broken.fixed_fixable;
                 fixable.clearActions();
                 // if the actions are cleared, the action that changes the music also gets wiped.
                 // we need to stop at least the shrinking-to-nothing action.
@@ -77,41 +75,55 @@ public class MenuScreen extends BaseScreen {
                 fixable.setScale(30);
                 item = new Container<Fixable>(fixable).padLeft(40); // not sure if 40 is best.
             }
-            int finalI = i;
+            int finalI1 = i;
             item.addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    AssetLoader.ceramic_sound.play(BaseGame.soundVolume, MathUtils.random(0.75f, 1.25f), 0f);
-                    BaseActor overlay = new Background("whitePixel", uiStage);
-                    overlay.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-                    overlay.setColor(Color.BLACK);
-                    overlay.setOpacity(0f);
-                    overlay.addAction(Actions.sequence(
-                        Actions.fadeIn(0.25f),
-                        Actions.run(() -> BaseGame.setActiveScreen(new LevelScreen(BaseGame.brokens.get(finalI))))
-                    ));
+                    _go_to_level_screen(finalI1);
                     return super.touchDown(event, x, y, pointer, button);
                 }
             });
 
+            item.addListener(new InputListener() {
+                @Override
+                public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                    effect = new EffectHolyFireNoGravity();
+
+                    Vector2 position = item.localToStageCoordinates(new Vector2(item.getWidth() / 2f, item.getHeight() / 2f));
+
+                    effect.setPosition(
+                        position.x - effect.getWidth() / 2f,
+                        position.y - effect.getHeight() / 2f
+                    );
+
+                    effect.setScale(0.75f);
+                    uiStage.addActor(effect);
+                    effect.setZIndex(0);
+                }
+
+                @Override
+                public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                    super.exit(event, x, y, pointer, toActor);
+                    effect.stop();
+                }
+            });
+
             display_shelf.add(item)
-                .width(Gdx.graphics.getWidth() * shelf_width)
-                .height(Gdx.graphics.getHeight() * shelf_height)
+                .expand()
+                .spaceBottom(Gdx.graphics.getHeight() * 0.05f)
             ;
         }
 
         uiTable.add(display_shelf)
-            .padTop(Gdx.graphics.getHeight() * 0.062f)
-            .padRight(Gdx.graphics.getWidth() * 0.065f)
-            .padBottom(Gdx.graphics.getHeight() * 0.045f)
+            .padTop(Gdx.graphics.getHeight() * 0.1f)
+            .padRight(Gdx.graphics.getWidth() * 0.08f)
+            .padBottom(Gdx.graphics.getHeight() * 0.06f)
             .padLeft(Gdx.graphics.getWidth() * 0.09f)
             .expand()
-            .top()
-            .left()
         ;
 
-        //display_shelf.setDebug(true);
-        //uiTable.setDebug(true);
+        /*display_shelf.setDebug(true);
+        uiTable.setDebug(true);*/
     }
 
 
@@ -123,21 +135,21 @@ public class MenuScreen extends BaseScreen {
     public boolean keyDown(int keycode) {
         if (keycode == Keys.ESCAPE || keycode == Keys.Q) {
             Gdx.app.exit();
-        } else if (keycode == Input.Keys.S) {
+        } else if (keycode == Keys.S) {
             BaseGame.isGameOverShowEnabled = !BaseGame.isGameOverShowEnabled;
             if (BaseGame.isGameOverShowEnabled)
                 AssetLoader.click_sound.play(BaseGame.soundVolume, MathUtils.random(1.1f, 1.3f), 0f);
             else
                 AssetLoader.click_sound.play(BaseGame.soundVolume, MathUtils.random(0.5f, 0.7f), 0f);
             System.out.println("isGameOverShowEnabled: " + BaseGame.isGameOverShowEnabled);
-        } else if (keycode == Input.Keys.C) {
+        } else if (keycode == Keys.C) {
             BaseGame.isCameraShakeEnabled = !BaseGame.isCameraShakeEnabled;
             if (BaseGame.isCameraShakeEnabled)
                 AssetLoader.click_sound.play(BaseGame.soundVolume, MathUtils.random(1.1f, 1.3f), 0f);
             else
                 AssetLoader.click_sound.play(BaseGame.soundVolume, MathUtils.random(0.5f, 0.7f), 0f);
             System.out.println("isCameraShakeEnabled: " + BaseGame.isCameraShakeEnabled);
-        } else if (keycode == Input.Keys.B) {
+        } else if (keycode == Keys.B) {
             BaseGame.isScoreBarEnabled = !BaseGame.isScoreBarEnabled;
             if (BaseGame.isScoreBarEnabled)
                 AssetLoader.click_sound.play(BaseGame.soundVolume, MathUtils.random(1.1f, 1.3f), 0f);
@@ -163,5 +175,18 @@ public class MenuScreen extends BaseScreen {
         overlay.setOpacity(0f);
 
         return super.touchDown(screenX, screenY, pointer, button);
+    }
+
+
+    private void _go_to_level_screen(int index) {
+        AssetLoader.ceramic_sound.play(BaseGame.soundVolume, MathUtils.random(0.75f, 1.25f), 0f);
+        BaseActor overlay = new Background("whitePixel", uiStage);
+        overlay.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        overlay.setColor(Color.BLACK);
+        overlay.setOpacity(0f);
+        overlay.addAction(Actions.sequence(
+            Actions.fadeIn(0.25f),
+            Actions.run(() -> BaseGame.setActiveScreen(new LevelScreen(BaseGame.brokens.get(index))))
+        ));
     }
 }
