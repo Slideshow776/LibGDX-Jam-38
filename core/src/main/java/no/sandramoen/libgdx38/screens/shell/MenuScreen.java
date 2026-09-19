@@ -3,6 +3,7 @@ package no.sandramoen.libgdx38.screens.shell;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
@@ -92,6 +93,7 @@ public class MenuScreen extends BaseScreen {
                     if (item instanceof DisplayShelfImage) {
                         ((DisplayShelfImage) item).is_glow_enabled = true;
                         ((DisplayShelfImage) item).ceramic_sound.play(BaseGame.soundVolume, ((DisplayShelfImage) item).ceramic_sound_pitch + MathUtils.random(-0.1f, 0.1f), 0f);
+                        ((DisplayShelfImage) item).addAction(Actions.scaleTo(1.025f, 1.025f, 0.25f, Interpolation.circleOut));
                     }
                     effect = new EffectHolyFireNoGravity();
 
@@ -113,6 +115,7 @@ public class MenuScreen extends BaseScreen {
                     effect.stop();
                     if (item instanceof DisplayShelfImage) {
                         ((DisplayShelfImage) item).is_glow_enabled = false;
+                        ((DisplayShelfImage) item).addAction(Actions.scaleTo(1.0f, 1.0f, 0.25f, Interpolation.circleOut));
                     }
                 }
             });
