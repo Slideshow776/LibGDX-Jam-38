@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
+import com.badlogic.gdx.utils.Align;
 import no.sandramoen.libgdx38.actors.Background;
 import no.sandramoen.libgdx38.actors.DisplayShelfImage;
 import no.sandramoen.libgdx38.actors.Fixable;
@@ -72,9 +73,11 @@ public class MenuScreen extends BaseScreen {
                 AssetLoader.firework_ambiant_music.stop();
                 GameUtils.playLoopingMusic(AssetLoader.level_music);
 
-                fixable.setScale(30);
-                item = new Container<Fixable>(fixable).padLeft(40); // not sure if 40 is best.
+                fixable.setScale(50);
+                fixable.debugAll();
+                item = new Container<Fixable>(fixable).padBottom(-100);
             }
+            item.setOrigin(Align.center);
             int finalI1 = i;
             item.addListener(new InputListener(){
                 @Override
