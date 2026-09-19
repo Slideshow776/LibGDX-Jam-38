@@ -47,7 +47,7 @@ public abstract class BaseGame extends Game implements AssetErrorListener {
     /**
      * Single point of configuration to enable all debug drawing.
      */
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     public static Array<Broken> brokens;
 

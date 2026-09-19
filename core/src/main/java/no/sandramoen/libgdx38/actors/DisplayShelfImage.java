@@ -24,7 +24,7 @@ public class DisplayShelfImage extends Image {
     public DisplayShelfImage(String region_name) {
         super(AssetLoader.textureAtlas.findRegion(region_name));
         _start_hover_animation();
-
+        
         shaderProgram = GameUtils.initShaderProgram(AssetLoader.defaultShader, AssetLoader.glowShader);
     }
 
