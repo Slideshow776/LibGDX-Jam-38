@@ -43,6 +43,12 @@ public abstract class BaseGame extends Game implements AssetErrorListener {
     public static final float WORLD_HEIGHT = 9f;
     public static final float MOVEMENT_THRESHOLD = 0.4f;
     public static final boolean DISABLE_RANDOM = false; // Should be true only when testing the fully-fixed state.
+
+    /**
+     * Single point of configuration to enable all debug drawing.
+     */
+    public static final boolean DEBUG = true;
+
     public static Array<Broken> brokens;
 
 

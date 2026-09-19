@@ -67,8 +67,6 @@ public class Piece extends BaseActor {
                 1f
         ));
         addAction(rotation_action);
-
-        setDebug(true);
     }
 
 

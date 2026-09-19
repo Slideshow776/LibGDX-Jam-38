@@ -64,6 +64,7 @@ public class MenuScreen extends BaseScreen {
             Actor item;
             if(broken.fixed_fixable == null || !broken.fixed_fixable.hasChildren()) {
                 item = new DisplayShelfImage(broken.image_path + "/" + MathUtils.random(0, broken.num_pieces - 1));
+                item.setOrigin(Align.center);
             } else {
                 Fixable fixable = broken.fixed_fixable;
                 fixable.clearActions();
@@ -74,10 +75,9 @@ public class MenuScreen extends BaseScreen {
                 GameUtils.playLoopingMusic(AssetLoader.level_music);
 
                 fixable.setScale(50);
-                fixable.debugAll();
+                fixable.setSize(uiStage.getWidth() / 3f, uiStage.getHeight() / 2f);
                 item = new Container<Fixable>(fixable).padBottom(-100);
             }
-            item.setOrigin(Align.center);
             int finalI1 = i;
             item.addListener(new InputListener(){
                 @Override
@@ -115,8 +115,7 @@ public class MenuScreen extends BaseScreen {
                 }
             });
 
-            display_shelf.add(item)
-                .expand()
+            display_shelf.add(item).width(Gdx.graphics.getWidth() * 0.83f / 3f)
                 .spaceBottom(Gdx.graphics.getHeight() * 0.05f)
             ;
         }
@@ -129,8 +128,7 @@ public class MenuScreen extends BaseScreen {
             .expand()
         ;
 
-        /*display_shelf.setDebug(true);
-        uiTable.setDebug(true);*/
+        if(BaseGame.DEBUG) uiTable.debugAll();
     }
 
 
