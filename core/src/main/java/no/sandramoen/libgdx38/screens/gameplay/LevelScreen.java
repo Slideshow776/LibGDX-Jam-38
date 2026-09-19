@@ -540,7 +540,6 @@ public class LevelScreen extends BaseScreen {
             float curve = Math.abs(2 * normalized_i - 1f);
             float y = -3f + 5f * curve;
             effect.setPosition(i, y);
-            System.out.println(y);
 
             effect.setScale(0.015f);
             mainStage.addActor(effect);
