@@ -18,14 +18,17 @@ void main()
 
     vec4 averageColor = vec4(.0, .0, .0, .0);
 
-    for (float dx = -u_glowRadius; dx <= u_glowRadius; dx++) {
-        for (float dy = -u_glowRadius; dy <= u_glowRadius; dy++) {
-            vec2 point = v_texCoords + vec2(dx, dy) * pixelToTextureCoords;
-            averageColor += texture2D(u_texture, point);
-        }
-    }
+    averageColor += texture2D(u_texture, v_texCoords + vec2(-0.1, -0.1) * pixelToTextureCoords);
+    averageColor += texture2D(u_texture, v_texCoords + vec2(-0.1,  0.0) * pixelToTextureCoords);
+    averageColor += texture2D(u_texture, v_texCoords + vec2(-0.1,  0.1) * pixelToTextureCoords);
+    averageColor += texture2D(u_texture, v_texCoords + vec2( 0.0, -0.1) * pixelToTextureCoords);
+//    averageColor += texture2D(u_texture, v_texCoords + vec2( 0.0,  0.0) * pixelToTextureCoords);
+    averageColor += texture2D(u_texture, v_texCoords + vec2( 0.0,  0.1) * pixelToTextureCoords);
+    averageColor += texture2D(u_texture, v_texCoords + vec2( 0.1, -0.1) * pixelToTextureCoords);
+    averageColor += texture2D(u_texture, v_texCoords + vec2( 0.1,  0.0) * pixelToTextureCoords);
+    averageColor += texture2D(u_texture, v_texCoords + vec2( 0.1,  0.1) * pixelToTextureCoords);
 
-    averageColor /= pow(2.0 * u_glowRadius + 1.0, 2.0);
+    averageColor *= pow(2.0 * u_glowRadius + 1.0, -2.0) * 0.125;
 
     float amount = (sin(6.0 * u_time) + 1.0) * .5;
     // extra factor of 2.0 intensifies glow effect
