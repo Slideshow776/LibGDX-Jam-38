@@ -38,6 +38,7 @@ gdxTeaVM {
   webDefaults {
     mainClass.set("no.sandramoen.libgdx38.teavm.TeaVMLauncher")
     htmlTitle.set(appName)
+    logoPath.set("loading.png")
   }
 
   js {
