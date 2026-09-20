@@ -84,7 +84,7 @@ public class MenuScreen extends BaseScreen {
 
                 fixable.setScale(50);
                 fixable.setSize(uiStage.getWidth() / 3f, uiStage.getHeight() / 2f);
-                item = new Container<Fixable>(fixable).padBottom(-100);
+                item = new Container<Fixable>(fixable).padBottom(-40);
             }
             int finalI1 = i;
             item.addListener(new InputListener(){
