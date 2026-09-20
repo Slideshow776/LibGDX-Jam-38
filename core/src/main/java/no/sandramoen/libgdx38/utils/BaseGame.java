@@ -60,11 +60,11 @@ public abstract class BaseGame extends Game implements AssetErrorListener {
 
         brokens = new Array<Broken>();
         brokens.add(new Teacup());
-        brokens.add(new CreamFlowerVase());
-        brokens.add(new BlueVase());
-        brokens.add(new Teapot());
         brokens.add(new StoutVase());
+        brokens.add(new BlueVase());
         brokens.add(new PurpleBowl());
+        brokens.add(new CreamFlowerVase());
+        brokens.add(new Teapot());
 
     }
 
