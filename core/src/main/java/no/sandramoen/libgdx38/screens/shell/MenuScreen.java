@@ -116,6 +116,7 @@ public class MenuScreen extends BaseScreen {
                     effect.setScale(0.75f);
                     uiStage.addActor(effect);
                     effect.setZIndex(0);
+                    effect.start();
                 }
 
                 @Override
