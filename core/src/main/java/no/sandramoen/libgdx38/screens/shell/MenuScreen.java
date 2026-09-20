@@ -70,7 +70,8 @@ public class MenuScreen extends BaseScreen {
             Broken broken = BaseGame.brokens.get(i);
             Actor item;
             if(broken.fixed_fixable == null || !broken.fixed_fixable.hasChildren()) {
-                item = new DisplayShelfImage(broken.image_path + "/" + MathUtils.random(0, broken.num_pieces - 1));
+                item = new DisplayShelfImage(broken.image_path + "/" + "shelf_image/shelf_image");
+//                item = new DisplayShelfImage(broken.image_path + "/" + MathUtils.random(0, broken.num_pieces - 1));
             } else {
                 Fixable fixable = broken.fixed_fixable;
                 fixable.clearActions();

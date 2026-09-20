@@ -44,6 +44,8 @@ var packTextures = tasks.register("packTextures") {
     var settings = new TexturePacker.Settings()
     settings.maxWidth = 4096
     settings.maxHeight = 4096
+    settings.stripWhitespaceX = true
+    settings.stripWhitespaceY = true
     settings.combineSubdirectories = true
     TexturePacker.process(settings, inputDir, outputDir, "images.pack")
   }

@@ -11,10 +11,7 @@ import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.utils.Array;
 
-import no.sandramoen.libgdx38.actors.broken.BlueThick;
-import no.sandramoen.libgdx38.actors.broken.BlueThin;
-import no.sandramoen.libgdx38.actors.broken.Broken;
-import no.sandramoen.libgdx38.actors.broken.CatMug;
+import no.sandramoen.libgdx38.actors.broken.*;
 import no.sandramoen.libgdx38.screens.gameplay.LevelScreen;
 
 
@@ -62,12 +59,12 @@ public abstract class BaseGame extends Game implements AssetErrorListener {
         new no.sandramoen.libgdx38.utils.AssetLoader();
 
         brokens = new Array<Broken>();
-        brokens.add(new CatMug());
-        brokens.add(new BlueThick());
-        brokens.add(new BlueThin());
-        brokens.add(new CatMug());
-        brokens.add(new CatMug());
-        brokens.add(new CatMug());
+        brokens.add(new Teacup());
+        brokens.add(new CreamFlowerVase());
+        brokens.add(new BlueVase());
+        brokens.add(new Teapot());
+        brokens.add(new StoutVase());
+        brokens.add(new PurpleBowl());
 
     }
 
