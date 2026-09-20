@@ -2,16 +2,16 @@ Flame
 - Delay -
 active: false
 - Duration - 
-lowMin: 3000.0
-lowMax: 3000.0
+lowMin: 5000.0
+lowMax: 5000.0
 - Count - 
 min: 0
-max: 200
+max: 40
 - Emission - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 250.0
-highMax: 250.0
+highMin: 20.0
+highMax: 20.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -20,8 +20,8 @@ timeline0: 0.0
 - Life - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 500.0
-highMax: 1000.0
+highMin: 2000.0
+highMax: 3000.0
 relative: false
 scalingCount: 3
 scaling0: 1.0
@@ -64,13 +64,17 @@ timeline0: 0.0
 - X Scale - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 32.0
+highMin: 28.0
 highMax: 32.0
 relative: false
-scalingCount: 1
+scalingCount: 3
 scaling0: 1.0
-timelineCount: 1
+scaling1: 0.7288136
+scaling2: 0.0
+timelineCount: 3
 timeline0: 0.0
+timeline1: 0.9027778
+timeline2: 1.0
 - Y Scale - 
 active: false
 - Velocity - 
@@ -78,7 +82,7 @@ active: true
 lowMin: 0.0
 lowMax: 0.0
 highMin: 60.0
-highMax: 600.0
+highMax: 120.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -86,10 +90,10 @@ timelineCount: 1
 timeline0: 0.0
 - Angle - 
 active: true
-lowMin: 90.0
-lowMax: 90.0
-highMin: 45.0
-highMax: 135.0
+lowMin: 0.0
+lowMax: 360.0
+highMin: 0.0
+highMax: 360.0
 relative: false
 scalingCount: 3
 scaling0: 1.0
@@ -107,9 +111,9 @@ active: false
 active: false
 - Tint - 
 colorsCount: 3
-colors0: 1.0
-colors1: 0.47191012
-colors2: 0.047058824
+colors0: 0.7647059
+colors1: 0.08627451
+colors2: 0.42745098
 timelineCount: 1
 timeline0: 0.0
 - Transparency - 

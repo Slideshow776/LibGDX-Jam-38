@@ -19,6 +19,7 @@ import no.sandramoen.libgdx38.actors.broken.Broken;
 import no.sandramoen.libgdx38.actors.particles.EffectBurst;
 import no.sandramoen.libgdx38.actors.particles.EffectHolyFire;
 import no.sandramoen.libgdx38.actors.particles.EffectHolyFireNoGravity;
+import no.sandramoen.libgdx38.actors.particles.ParticleActor;
 import no.sandramoen.libgdx38.screens.gameplay.LevelScreen;
 import no.sandramoen.libgdx38.utils.AssetLoader;
 import no.sandramoen.libgdx38.utils.BaseActor;
@@ -30,7 +31,7 @@ import no.sandramoen.libgdx38.utils.GameUtils;
 public class MenuScreen extends BaseScreen {
 
     private BaseActor overlay;
-    private EffectHolyFireNoGravity effect;
+    private ParticleActor effect;
 
     @Override
     public void initialize() {
@@ -56,10 +57,10 @@ public class MenuScreen extends BaseScreen {
         background.setSize(BaseGame.WORLD_WIDTH, BaseGame.WORLD_HEIGHT);
 
         // shelf
-        BaseActor shelf = new BaseActor(0f, 0f, mainStage);
+        BaseActor shelf = new BaseActor(0f, -0.75f, mainStage);
         shelf.setTouchable(Touchable.disabled);
         shelf.loadImage("Shelf");
-        shelf.setSize(BaseGame.WORLD_WIDTH, BaseGame.WORLD_HEIGHT);
+        shelf.setSize(BaseGame.WORLD_WIDTH, BaseGame.WORLD_HEIGHT * 1.15f);
 
         // display shelf
         Table display_shelf = new Table();
@@ -70,7 +71,7 @@ public class MenuScreen extends BaseScreen {
             Broken broken = BaseGame.brokens.get(i);
             Actor item;
             if(broken.fixed_fixable == null || !broken.fixed_fixable.hasChildren()) {
-                item = new DisplayShelfImage(broken.image_path + "/" + "shelf_image/shelf_image");
+                item = new DisplayShelfImage(broken.image_path + "/" + "shelf_image/shelf_image", broken.particleActor);
 //                item = new DisplayShelfImage(broken.image_path + "/" + MathUtils.random(0, broken.num_pieces - 1));
                 item.setScale(0.7f);
             } else {
@@ -103,7 +104,7 @@ public class MenuScreen extends BaseScreen {
                         ((DisplayShelfImage) item).ceramic_sound.play(BaseGame.soundVolume, ((DisplayShelfImage) item).ceramic_sound_pitch + MathUtils.random(-0.1f, 0.1f), 0f);
                         ((DisplayShelfImage) item).addAction(Actions.scaleTo(0.8f, 0.8f, 0.25f, Interpolation.circleOut));
                     }
-                    effect = new EffectHolyFireNoGravity();
+                    effect = broken.particleActor;
 
                     Vector2 position = item.localToStageCoordinates(new Vector2(item.getWidth() / 2f, item.getHeight() / 2f));
 

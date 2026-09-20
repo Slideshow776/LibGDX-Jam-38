@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
+import no.sandramoen.libgdx38.actors.particles.ParticleActor;
 import no.sandramoen.libgdx38.utils.AssetLoader;
 import no.sandramoen.libgdx38.utils.GameUtils;
 
@@ -17,12 +18,14 @@ public class DisplayShelfImage extends Image {
     public boolean is_glow_enabled = false;
     public Sound ceramic_sound = AssetLoader.ceramic_sounds.get(MathUtils.random(0, AssetLoader.ceramic_sounds.size - 1));
     public float ceramic_sound_pitch = MathUtils.random(0.5f, 1.5f);
+    public ParticleActor particleActor;
 
     private float time;
     private ShaderProgram shaderProgram;
 
-    public DisplayShelfImage(String region_name) {
+    public DisplayShelfImage(String region_name, ParticleActor particleActor) {
         super(AssetLoader.textureAtlas.findRegion(region_name));
+        this.particleActor = particleActor;
         _start_hover_animation();
 
         shaderProgram = GameUtils.initShaderProgram(AssetLoader.defaultShader, AssetLoader.glowShader);
