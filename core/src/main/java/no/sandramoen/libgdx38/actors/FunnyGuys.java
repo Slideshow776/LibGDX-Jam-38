@@ -18,23 +18,35 @@ public class FunnyGuys extends BaseActor {
 
         float scale = 1;
         float random = MathUtils.random();
-        if (random <= 1/3f) {
+        if (random <= 1 / 5f) {
             loadImage("funny_guys/funny guy 0");
             setSize(
                 2f * scale * MathUtils.random(0.95f, 1.05f),
                 2.2f * scale * MathUtils.random(0.95f, 1.05f)
             );
-        }else if (random <= 2/3f) {
+        } else if (random <= 2 / 5f) {
             loadImage("funny_guys/funny guy 1");
             setSize(
                 4f * scale * MathUtils.random(0.95f, 1.05f),
                 2f * scale * MathUtils.random(0.95f, 1.05f)
             );
-        } else {
+        } else if (random <= 3 / 5f) {
             loadImage("funny_guys/funny guy 2");
             setSize(
                 1.8f * scale * MathUtils.random(0.95f, 1.05f),
                 1.6f * scale * MathUtils.random(0.95f, 1.05f)
+            );
+        } else if (random <= 4 / 5f) {
+            loadImage("funny_guys/funny guy 3");
+            setSize(
+                4f * scale * MathUtils.random(0.95f, 1.05f),
+                2f * scale * MathUtils.random(0.95f, 1.05f)
+            );
+        } else {
+            loadImage("funny_guys/funny guy 4");
+            setSize(
+                4f * scale * MathUtils.random(0.95f, 1.05f),
+                2f * scale * MathUtils.random(0.95f, 1.05f)
             );
         }
 
