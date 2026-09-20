@@ -23,8 +23,6 @@ public class DisplayShelfImage extends Image {
 
     public DisplayShelfImage(String region_name) {
         super(AssetLoader.textureAtlas.findRegion(region_name));
-        if(AssetLoader.textureAtlas.findRegion(region_name) == null)
-            System.out.println(region_name + " NOT FOUND!");
         _start_hover_animation();
 
         shaderProgram = GameUtils.initShaderProgram(AssetLoader.defaultShader, AssetLoader.glowShader);
