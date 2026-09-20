@@ -52,8 +52,14 @@ public class MenuScreen extends BaseScreen {
         // background
         BaseActor background = new BaseActor(0f, 0f, mainStage);
         background.setTouchable(Touchable.disabled);
-        background.loadImage("shelf");
+        background.loadImage("Shelf Background 960x960");
         background.setSize(BaseGame.WORLD_WIDTH, BaseGame.WORLD_HEIGHT);
+
+        // shelf
+        BaseActor shelf = new BaseActor(0f, 0f, mainStage);
+        shelf.setTouchable(Touchable.disabled);
+        shelf.loadImage("Shelf");
+        shelf.setSize(BaseGame.WORLD_WIDTH, BaseGame.WORLD_HEIGHT);
 
         // display shelf
         Table display_shelf = new Table();
