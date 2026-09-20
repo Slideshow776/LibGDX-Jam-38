@@ -72,6 +72,7 @@ public class MenuScreen extends BaseScreen {
             if(broken.fixed_fixable == null || !broken.fixed_fixable.hasChildren()) {
                 item = new DisplayShelfImage(broken.image_path + "/" + "shelf_image/shelf_image");
 //                item = new DisplayShelfImage(broken.image_path + "/" + MathUtils.random(0, broken.num_pieces - 1));
+                item.setScale(0.75f);
             } else {
                 Fixable fixable = broken.fixed_fixable;
                 fixable.clearActions();
@@ -100,7 +101,7 @@ public class MenuScreen extends BaseScreen {
                     if (item instanceof DisplayShelfImage) {
                         ((DisplayShelfImage) item).is_glow_enabled = true;
                         ((DisplayShelfImage) item).ceramic_sound.play(BaseGame.soundVolume, ((DisplayShelfImage) item).ceramic_sound_pitch + MathUtils.random(-0.1f, 0.1f), 0f);
-                        ((DisplayShelfImage) item).addAction(Actions.scaleTo(1.025f, 1.025f, 0.25f, Interpolation.circleOut));
+                        ((DisplayShelfImage) item).addAction(Actions.scaleTo(0.85f, 0.85f, 0.25f, Interpolation.circleOut));
                     }
                     effect = new EffectHolyFireNoGravity();
 
@@ -122,28 +123,29 @@ public class MenuScreen extends BaseScreen {
                     effect.stop();
                     if (item instanceof DisplayShelfImage) {
                         ((DisplayShelfImage) item).is_glow_enabled = false;
-                        ((DisplayShelfImage) item).addAction(Actions.scaleTo(1.0f, 1.0f, 0.25f, Interpolation.circleOut));
+                        ((DisplayShelfImage) item).addAction(Actions.scaleTo(0.75f, 0.75f, 0.25f, Interpolation.circleOut));
                     }
                 }
             });
 
             display_shelf.add(item)
-                .width(Gdx.graphics.getWidth() * 0.83f / 3f)
-                .height(Gdx.graphics.getHeight() * 0.84f / 2f)
-                .spaceBottom(Gdx.graphics.getHeight() * 0.05f)
+                .width(Gdx.graphics.getWidth() * 0.94f / 3f)
+                .height(Gdx.graphics.getHeight() * 0.7f / 2f)
+                .spaceBottom(Gdx.graphics.getHeight() * 0.1f)
+                .spaceTop(Gdx.graphics.getHeight() * 0.1f)
             ;
         }
 
         uiTable.add(display_shelf)
-            .padTop(Gdx.graphics.getHeight() * 0.1f)
-            .padRight(Gdx.graphics.getWidth() * 0.08f)
-            .padBottom(Gdx.graphics.getHeight() * 0.06f)
-            .padLeft(Gdx.graphics.getWidth() * 0.09f)
+            .padTop(Gdx.graphics.getHeight() * 0.2f)
+            .padRight(Gdx.graphics.getWidth() * 0.03f)
+            .padBottom(Gdx.graphics.getHeight() * 0.1f)
+            .padLeft(Gdx.graphics.getWidth() * 0.03f)
             .expand()
         ;
 
         for(Actor item : display_shelf.getChildren()){
-            item.setOrigin(Gdx.graphics.getWidth() * 0.83f / 3f * 0.5f, Gdx.graphics.getHeight() * 0.84f / 2f * 0.5f);
+            item.setOrigin(Gdx.graphics.getWidth() * 0.94f / 3f * 0.5f, Gdx.graphics.getHeight() * 0.7f / 2f * 0.5f);
         }
 
         if(BaseGame.DEBUG) uiTable.debugAll();
