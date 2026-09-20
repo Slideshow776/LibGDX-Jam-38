@@ -11,6 +11,8 @@ import com.badlogic.gdx.utils.Align;
 import no.sandramoen.libgdx38.utils.BaseActor;
 
 public class FunnyGuys extends BaseActor {
+
+
     public FunnyGuys(float x, float y, Stage stage, int z_index, boolean is_right) {
         super(x, y, stage);
 
@@ -39,14 +41,14 @@ public class FunnyGuys extends BaseActor {
         } else if (random <= 4 / 5f) {
             loadImage("funny_guys/funny guy 3");
             setSize(
-                4f * scale * MathUtils.random(0.95f, 1.05f),
-                2f * scale * MathUtils.random(0.95f, 1.05f)
+                1.4f * scale * MathUtils.random(0.95f, 1.05f),
+                1.9f * scale * MathUtils.random(0.95f, 1.05f)
             );
         } else {
             loadImage("funny_guys/funny guy 4");
             setSize(
-                4f * scale * MathUtils.random(0.95f, 1.05f),
-                2f * scale * MathUtils.random(0.95f, 1.05f)
+                1.75f * scale * MathUtils.random(0.95f, 1.05f),
+                2.5f * scale * MathUtils.random(0.95f, 1.05f)
             );
         }
 
@@ -55,6 +57,7 @@ public class FunnyGuys extends BaseActor {
         if (is_right)
             flip();
     }
+
 
     public void start_sing_animation(float beat_speed) {
         float scale_to = 1.2f;
