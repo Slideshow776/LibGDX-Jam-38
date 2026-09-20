@@ -72,7 +72,7 @@ public class MenuScreen extends BaseScreen {
             if(broken.fixed_fixable == null || !broken.fixed_fixable.hasChildren()) {
                 item = new DisplayShelfImage(broken.image_path + "/" + "shelf_image/shelf_image");
 //                item = new DisplayShelfImage(broken.image_path + "/" + MathUtils.random(0, broken.num_pieces - 1));
-                item.setScale(0.6f);
+                item.setScale(0.7f);
             } else {
                 Fixable fixable = broken.fixed_fixable;
                 fixable.clearActions();
@@ -101,7 +101,7 @@ public class MenuScreen extends BaseScreen {
                     if (item instanceof DisplayShelfImage) {
                         ((DisplayShelfImage) item).is_glow_enabled = true;
                         ((DisplayShelfImage) item).ceramic_sound.play(BaseGame.soundVolume, ((DisplayShelfImage) item).ceramic_sound_pitch + MathUtils.random(-0.1f, 0.1f), 0f);
-                        ((DisplayShelfImage) item).addAction(Actions.scaleTo(0.75f, 0.75f, 0.25f, Interpolation.circleOut));
+                        ((DisplayShelfImage) item).addAction(Actions.scaleTo(0.8f, 0.8f, 0.25f, Interpolation.circleOut));
                     }
                     effect = new EffectHolyFireNoGravity();
 
@@ -123,7 +123,7 @@ public class MenuScreen extends BaseScreen {
                     effect.stop();
                     if (item instanceof DisplayShelfImage) {
                         ((DisplayShelfImage) item).is_glow_enabled = false;
-                        ((DisplayShelfImage) item).addAction(Actions.scaleTo(0.6f, 0.6f, 0.25f, Interpolation.circleOut));
+                        ((DisplayShelfImage) item).addAction(Actions.scaleTo(0.7f, 0.7f, 0.25f, Interpolation.circleOut));
                     }
                 }
             });
